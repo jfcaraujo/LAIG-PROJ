@@ -98,11 +98,19 @@
     <primitives>
         <primitive id="demoRectangle">
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
+        </primitive>
+        <primitive id="triangle">
             <triangle x1="2" y1="2" z1="2"
             x2="1" y2="2" z2="2"
             x3="1" y3="1" z3="2" />
+        </primitive>
+        <primitive id="cylinder">
             <cylinder base="2" top="2" height="5" slices="10" stacks="10" />
+        </primitive>
+        <primitive id="sphere">
             <sphere radius="5" slices="10" stacks="10" />
+        </primitive>
+        <primitive id="torus">
             <torus inner="3" outer="3" slices="10" loops="10" />
         </primitive>
     </primitives>
