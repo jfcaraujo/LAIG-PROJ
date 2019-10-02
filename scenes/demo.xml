@@ -2,10 +2,15 @@
     <scene root="demoRoot" axis_length="5"/>
 
     <views default="defaultCamera">
-        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="0.785">
             <from x="30" y="15" z="30" />
             <to x="0" y="-2" z="0" />
         </perspective>
+        <ortho id="orthoCamera" near="0.1" far="500" left="50" right="50" top="50" bottom="50" >
+            <from x="30" y="30" z="30" />
+            <to x="0" y="0" z="0" />
+            <up x="0" y="1" z="0" /> <!-- opcional, default 0,1,0 -->
+        </ortho>
     </views>
 
     <ambient>
@@ -20,10 +25,23 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
+        <spot id="spotLight" enabled="1" angle="0.785" exponent="5">
+            <!-- atencao, "target" e' diferente de "direction" -->
+            <location x="0" y="5" z="5" w=”1.0” />
+            <target x="30" y="30" z="30" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0.7" g="0.5" b="0.3" a="1.0" />
+            <specular r="0.3" g="0.5" b="0.7" a="1.0" />
+            <attenuation constant="0.05" linear="0.2" quadratic="0" />
+        </spot>
     </lights>
 
     <textures>
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="whiteTexture" file="scenes/images/bank.jpg" />
+        <texture id="leavesTexture" file="scenes/images/leaves.jpg" />
+        <texture id="rockTexture" file="scenes/images/rocks.jpg" />
+        <texture id="trunkTexture" file="scenes/images/trunk-image.jpg" />
     </textures>
 
     <materials>
@@ -33,19 +51,59 @@
             <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
         </material>
+           <material id="redMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="1.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        </material>
+           <material id="blueMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="1.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="1.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="1.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="1.0" a="1.0" />
+        </material>
+        </material>
+           <material id="greenMaterial" shininess="10">
+            <emission r="0.0" g="1.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="1.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="1.0" b="0.0" a="1.0" />
+        </material>
+        </material>
+           <material id="blackMaterial" shininess="10">
+            <emission r="1.0" g="1.0" b="1.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+        </material>
+           <material id="whiteMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
     </materials>
 
     <transformations>
         <transformation id="demoTransform">
             <scale x="5" y="1" z="5" />
-            <rotate axis="x" angle="-45" />
-            <rotate axis="z" angle="-45" />
+            <rotate axis="x" angle="-0.785" />
+            <rotate axis="z" angle="-0.785" />
         </transformation>
     </transformations>
 
     <primitives>
         <primitive id="demoRectangle">
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
+            <triangle x1="2" y1="2" z1="2"
+            x2="1" y2="2" z2="2"
+            x3="1" y3="1" z3="2" />
+            <cylinder base="2" top="2" height="5" slices="10" stacks="10" />
+            <sphere radius="5" slices="10" stacks="10" />
+            <torus inner="3" outer="3" slices="10" loops="10" />
         </primitive>
     </primitives>
 
