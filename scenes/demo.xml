@@ -85,6 +85,13 @@
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
+        </material>
+           <material id="brownMaterial" shininess="10">
+            <emission r="0.29" g="0.19" b="0.19" a="1.0" />
+            <ambient r="0.29" g="0.19" b="0.19" a="1.0" />
+            <diffuse r="0.29" g="0.19" b="0.19" a="1.0" />
+            <specular r="0.29" g="0.19" b="0.19" a="1.0" />
+        </material>
     </materials>
 
     <transformations>
@@ -104,8 +111,8 @@
             x2="1" y2="2" z2="2"
             x3="1" y3="1" z3="2" />
         </primitive>
-        <primitive id="cylinder">
-            <cylinder base="2" top="2" height="5" slices="10" stacks="10" />
+        <primitive id="leg">
+            <cylinder base="0.5" top="0.5" height="4" slices="10" stacks="10" />
         </primitive>
         <primitive id="sphere">
             <sphere radius="5" slices="10" stacks="10" />
@@ -113,10 +120,13 @@
         <primitive id="torus">
             <torus inner="3" outer="3" slices="10" loops="10" />
         </primitive>
+        <primitive id="table">
+            <cylinder base="4" top="4" height="0.2" slices="10" stacks="5" />
+        </primitive>
     </primitives>
 
     <components>
-        <component id="demoRoot">
+        <!--component id="demoRoot">
             <transformation>
                 <translate x="0" y="0" z="1" />
                 <scale x="2" y="1" z="1" />
@@ -127,6 +137,69 @@
             <texture id="demoTexture"/>
             <children>
                 <primitiveref id="demoRectangle" />
+            </children>
+        </component-->
+        <component id="table">
+            <transformation>
+                <translate x="5" y="0" z="4" />
+            </transformation>
+            <materials>
+                <material id="brownMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="table" />
+            </children>
+        </component>
+           <component id="leg1">
+            <transformation>
+                <translate x="3" y="2" z="0" />
+            </transformation>
+            <materials>
+                <material id="brownMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="leg" />
+            </children>
+        </component>
+        </component>
+           <component id="leg2">
+            <transformation>
+                <translate x="3" y="-2" z="0" />
+            </transformation>
+            <materials>
+                <material id="brownMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="leg" />
+            </children>
+        </component>
+        </component>
+           <component id="leg3">
+            <transformation>
+                <translate x="7" y="2" z="0" />
+            </transformation>
+            <materials>
+                <material id="brownMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="leg" />
+            </children>
+        </component>
+        </component>
+           <component id="leg4">
+            <transformation>
+                <translate x="7" y="-2" z="0" />
+            </transformation>
+            <materials>
+                <material id="brownMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="leg" />
             </children>
         </component>
     </components>
