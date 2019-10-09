@@ -526,7 +526,7 @@ class MySceneGraph {
 
             if (children[0].nodeName != "emission" || children[1].nodeName != "ambient" || children[2].nodeName != "diffuse" || children[3].nodeName != "specular")
                 return "Material with ID = " + materialID + "has wrong children components";
-            var emission = this.parseColor(children[0],"emission of the material with ID = "+materialID);
+            var emission = this.parseColor(children[0], "emission of the material with ID = " + materialID);
             var ambient = this.parseColor(children[0], "ambient of the material with ID = " + materialID);
             var diffuse = this.parseColor(children[0], "diffuse of the material with ID = " + materialID);
             var specular = this.parseColor(children[0], "specular of the material with ID = " + materialID);
