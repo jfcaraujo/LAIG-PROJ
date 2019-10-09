@@ -227,11 +227,12 @@ class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
+        this.views = new Array();
         var children = viewsNode.children;
         var view;
         this.defaultCameraId = this.reader.getString(viewsNode, 'default');
         for (var i = 0; i < children.length; i++) {
-            view=children[i];
+            view = children[i];
             var viewId = this.reader.getFloat(view, 'id');
 
             if (view.nodeName == 'perspective') {
@@ -247,9 +248,68 @@ class MySceneGraph {
                 var angle = this.reader.getFloat(view, 'angle');
                 if (!(angle != null && !isNaN(angle)))
                     return "unable to parse angle of the view for ID = " + viewId;
-            }
-        }//TODO complete view
 
+                var children = view.children;
+                //from
+                if (children[0].nodeName != "from")
+                    return "unable to parse from of the view for ID = " + viewId;
+                var from = this.parseCoordinates3D(children[0], "from of the view for ID = " + viewId);
+                //to
+                if (children[1].nodeName != "to")
+                    return "unable to parse to of the view for ID = " + viewId;
+                var to = this.parseCoordinates3D(children[1], "to of the view for ID = " + viewId);
+                var cam = new CGFcamera(angle * DEGREE_TO_RAD, near, far, from, to);
+                this.views[viewId] = cam;
+            }
+            else if (view.nodeName == 'ortho') {
+                // near
+                var near = this.reader.getFloat(view, 'near');
+                if (!(near != null && !isNaN(near)))
+                    return "unable to parse near of the view for ID = " + viewId;
+                // far
+                var far = this.reader.getFloat(view, 'far');
+                if (!(far != null && !isNaN(far)))
+                    return "unable to parse far of the view for ID = " + viewId;
+                //left
+                var left = this.reader.getFloat(view, 'left');
+                if (!(left != null && !isNaN(left)))
+                    return "unable to parse left of the view for ID = " + viewId;
+                //right
+                var right = this.reader.getFloat(view, 'right');
+                if (!(right != null && !isNaN(right)))
+                    return "unable to parse right of the view for ID = " + viewId;
+                //top
+                var top = this.reader.getFloat(view, 'top');
+                if (!(top != null && !isNaN(top)))
+                    return "unable to parse top of the view for ID = " + viewId;
+                //bottom
+                var bottom = this.reader.getFloat(view, 'bottom');
+                if (!(bottom != null && !isNaN(bottom)))
+                    return "unable to parse bottom of the view for ID = " + viewId;
+
+                var children = view.children;
+                //from
+                if (children[0].nodeName != "from")
+                    return "unable to parse from of the view for ID = " + viewId;
+                var from = this.parseCoordinates3D(children[0], "from of the view for ID = " + viewId);
+                //to
+                if (children[1].nodeName != "to")
+                    return "unable to parse to of the view for ID = " + viewId;
+                var to = this.parseCoordinates3D(children[1], "to of the view for ID = " + viewId);
+                //up
+                if (children.length == 3) {
+                    if (children[1].nodeName != "up")
+                        return "unable to parse up of the view for ID = " + viewId;
+                    var up = this.parseCoordinates3D(children[1], "up of the view for ID = " + viewId);
+                }
+                else var up = [0, 1, 0];
+
+                var cam = new CGFcameraOrtho(left, right, bottom, top, near, far, from, to, up);
+                this.views[viewId] = cam;
+
+            }
+        }
+        this.log("Parsed views");
         return null;
     }
 
@@ -412,9 +472,24 @@ class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-
-        //For each texture in textures block, check ID and file URL
-        this.onXMLMinorError("TODO: Parse textures.");
+        this.textures = new Array();
+        var children = texturesNode.children;
+        for (var i = 0; i < children.length; i++) {
+            var textureID = this.reader.getString(children[i], 'id');
+            if (textureID == null) {
+                this.onXMLMinorError("Texture with null ID");
+            }
+            if (this.textures[texId] != null) {
+                this.onXMLMinorError("Texture with ID" + texId + "already in use");
+            }
+            var textureFile = this.reader.getString(children[i], 'file');
+            if (textureFile == null) {
+                this.onXMLMinorError("Texture with null filepath");
+            }
+            var tex = new CGFtexture(this.scene, textureFile);
+            this.textures[texId] = tex;
+        }
+        console.log("Parsed textures");
         return null;
     }
 
@@ -426,9 +501,6 @@ class MySceneGraph {
         var children = materialsNode.children;
 
         this.materials = [];
-
-        var grandChildren = [];
-        var nodeNames = [];
 
         // Any number of materials.
         for (var i = 0; i < children.length; i++) {
@@ -445,13 +517,31 @@ class MySceneGraph {
 
             // Checks for repeated IDs.
             if (this.materials[materialID] != null)
-                return "ID must be unique for each light (conflict: ID = " + materialID + ")";
+                return "ID must be unique for each material (conflict: ID = " + materialID + ")";
 
-            //Continue here
-            this.onXMLMinorError("TODO: Parse materials.");
+
+            var shininess = this.reader.getFloat(children[i], 'shininess');
+            if (!(shininess != null && !isNaN(shininess)))
+                return "unable to parse shininess of the material for ID = " + materialID;
+
+            if (children[0].nodeName != "emission" || children[1].nodeName != "ambient" || children[2].nodeName != "diffuse" || children[3].nodeName != "specular")
+                return "Material with ID = " + materialID + "has wrong children components";
+            var emission = this.parseColor(children[0],"emission of the material with ID = "+materialID);
+            var ambient = this.parseColor(children[0], "ambient of the material with ID = " + materialID);
+            var diffuse = this.parseColor(children[0], "diffuse of the material with ID = " + materialID);
+            var specular = this.parseColor(children[0], "specular of the material with ID = " + materialID);
+
+            var material = new CGFappearance(this.scene);
+            material.setTextureWrap("REPEAT", "REPEAT");
+            material.setShininess(shininess);
+            material.setEmission(emission[0], emission[1], emission[2], emission[3]);
+            material.setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
+            material.setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
+            material.setSpecular(specular[0], specular[1], specular[2], specular[3]);
+            this.materials[materialID] = material;
         }
 
-        //this.log("Parsed materials");
+        this.log("Parsed materials");
         return null;
     }
 

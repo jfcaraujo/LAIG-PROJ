@@ -40,10 +40,19 @@ class MyCylinder extends CGFobject {
         ang += alphaAng;
       }
       radius -= radiusDif / this.stacks;
-    } 
+    }
 
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
   }
 
+  updateTexCoords(s, t) {
+    this.texCoords = [];
+    for (var x = 0; x <= this.stacks; x++) {
+      for (var i = 0; i < pointsPerStack; i++) {
+        this.texCoords.push(i / this.slices, x * stackHeight);
+      }
+    } 
+    this.updateTexCoordsGLBuffers();
+  }
 }
