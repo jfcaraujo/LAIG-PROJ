@@ -12,10 +12,10 @@
         </ortho>
     </views>
 
-    <globals>
+    <ambient>
         <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
-    </globals>
+    </ambient>
 
     <lights>
         <omni id="demoLight" enabled="1">
@@ -111,7 +111,7 @@
             <sphere radius="1" slices="15" stacks="15" />
         </primitive>
         <primitive id="torus">
-            <torus inner="0.5" outer="2.5" slices="3" loops="25" />
+            <torus inner="0.5" outer="2.5" slices="25" loops="25" />
         </primitive>
     </primitives>
 
@@ -139,7 +139,7 @@
             <texture id="none"/>
             <children>
                 <primitiveref id="sphere"/>
-                <componentref id="ring"/>
+                <componentref id="ring"/> 
             </children>
         </component>
        <!-- table -->
