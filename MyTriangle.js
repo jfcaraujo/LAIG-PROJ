@@ -41,7 +41,8 @@ class MyTriangle extends CGFobject {
             ];
 
         this.indices = [
-            0, 1, 2, 0, 2, 1
+            0, 1, 2, 
+            0, 2, 1
         ];
 
         var V21 = vec3.create();  //vetor do ponto 1 ao ponto 2
@@ -88,14 +89,10 @@ class MyTriangle extends CGFobject {
     };
 
     updateTexCoords(s, t) {
-        //d1: 1-2
-        //d2: 2-3
-        //d3: 3-1
 
-
-        var d1 = Math.sqrt(Math.pow(this.v2[0] - this.v1[0], 2) + Math.pow(this.v2[1] - this.v1[1], 2) + Math.pow(this.v2[2] - this.v1[2], 2));
-        var d2 = Math.sqrt(Math.pow(this.v2[0] - this.v3[0], 2) + Math.pow(this.v2[1] - this.v3[1], 2) + Math.pow(this.v2[2] - this.v3[2], 2));
-        var d3 = Math.sqrt(Math.pow(this.v1[0] - this.v3[0], 2) + Math.pow(this.v1[1] - this.v3[1], 2) + Math.pow(this.v1[2] - this.v3[2], 2));
+        var d1 = Math.sqrt(Math.pow(this.v2[0] - this.v1[0], 2) + Math.pow(this.v2[1] - this.v1[1], 2) + Math.pow(this.v2[2] - this.v1[2], 2)); //d1: 1-2
+        var d2 = Math.sqrt(Math.pow(this.v2[0] - this.v3[0], 2) + Math.pow(this.v2[1] - this.v3[1], 2) + Math.pow(this.v2[2] - this.v3[2], 2)); //d2: 2-3
+        var d3 = Math.sqrt(Math.pow(this.v1[0] - this.v3[0], 2) + Math.pow(this.v1[1] - this.v3[1], 2) + Math.pow(this.v1[2] - this.v3[2], 2)); //d3: 3-1
 
         var angle = Math.acos((Math.pow(d2, 2) - Math.pow(d3, 2) + Math.pow(d1, 2)) / (2 * d2 * d1));
 
