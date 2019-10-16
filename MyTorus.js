@@ -19,7 +19,6 @@ class MyTorus extends CGFobject{
 		this.indices = [];
 		this.normals = [];
 		this.texCoords = [];
-		this.defaultTexCoords = [];
 
 		for (var i = 0; i <= this.loops; i++){
 			var l = i * 2 * Math.PI / this.loops;
@@ -39,7 +38,6 @@ class MyTorus extends CGFobject{
 			
 		}
 
-		this.defaultTexCoords = this.texCoords;
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	};
