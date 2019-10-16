@@ -901,9 +901,12 @@ class MySceneGraph {
 
             // Materials
             if (materialsIndex != 1) this.onXMLError("Material for component " + componentID + " not found");
-            var materialID = this.reader.getString(grandChildren[materialsIndex].children[0], 'id');
-            if (materialID != "inherit" && this.materials[materialID] == null) {
-                this.onXMLMinorError("No material for ID : " + materialID);
+            var materialID = new Array();
+            for (var x = 0; x < grandChildren[materialsIndex].children.length; x++) {
+                materialID[x] = this.reader.getString(grandChildren[materialsIndex].children[x], 'id');
+                if (materialID[x] != "inherit" && this.materials[materialID[x]] == null) {
+                    this.onXMLMinorError("No material for ID : " + materialID[x]);
+                }
             }
             // Texture //TODO add coords
             if (textureIndex != 2) this.onXMLError("Texture for component " + componentID + " not found");
@@ -914,10 +917,10 @@ class MySceneGraph {
             var textureLenghtS = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false);
             var textureLenghtT = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false);
 
-            //if (textureLenghtS==null||)
+            if (textureLenghtS == null || textureLenghtT == null)
 
-            // Children
-            if (childrenIndex != 3) this.onXMLError("Children for component " + componentID + " not found");
+                // Children
+                if (childrenIndex != 3) this.onXMLError("Children for component " + componentID + " not found");
 
             grandgrandChildren = grandChildren[childrenIndex].children;
             var leaves = new Array;
@@ -1063,29 +1066,38 @@ class MySceneGraph {
         this.displayComponent(this.idRoot, null);
     }
 
-    displayComponent(componentID, oldMaterial) {
+    displayComponent(componentID, parentComponent) {
         if (this.components[componentID] == null)
             this.onXMLMinorError("No component for ID : " + componentID);
         var component = this.components[componentID];
-        var material = oldMaterial;
+        var material = null;
+        if (parentComponent != null)
+            material = this.materials[parentComponent.currentMaterialID];
         this.scene.pushMatrix();
         this.scene.multMatrix(component.transformation);
-        if (component.material != 'inherit')
-            material = this.materials[component.material];
+        if (component.currentMaterialID != 'inherit')
+            material = this.materials[component.currentMaterialID];
         if (material != null) {
-            if (component.texture != 'inherit' && component.texture != 'none')
+            if (component.texture == 'inherit')
+                material.setTexture(this.textures[parentComponent.texture]);
+            else if (component.materials == 'none')
+                material.setTexture(null);
+            else
                 material.setTexture(this.textures[component.texture]);
-            if (component.material != 'inherit')
-                material.apply();
-            material.setTexture(null);
+            material.apply();
         }
 
         for (var i in component.leaves)
             this.primitives[component.leaves[i]].display();
 
         for (var i in component.children)
-            this.displayComponent(component.children[i], material);
+            this.displayComponent(component.children[i], component);
         this.scene.popMatrix();
 
+    }
+
+    changeTexture(){
+        for (var i in this.components)
+            this.components[i].updateMaterial();
     }
 }

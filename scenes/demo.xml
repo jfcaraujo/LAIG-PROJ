@@ -123,6 +123,7 @@
             </transformation>
             <materials>
                 <material id="greenMaterial" />
+                <material id="blueMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -135,6 +136,7 @@
             </transformation>
             <materials>
                 <material id="blueMaterial" />
+                <material id="greenMaterial" />
             </materials>
             <texture id="none"/>
             <children>
