@@ -231,6 +231,8 @@ class MySceneGraph {
         var children = viewsNode.children;
         var view;
         this.defaultCameraId = this.reader.getString(viewsNode, 'default');
+        if (children.length == 0)
+            this.onXMLError("No views found");
         for (var i = 0; i < children.length; i++) {
             view = children[i];
             var viewId = this.reader.getString(view, 'id');
@@ -308,6 +310,7 @@ class MySceneGraph {
                 this.views[viewId] = cam;
 
             }
+            else this.onXMLError("View not identified");
         }
         this.log("Parsed views");
         return null;
@@ -353,7 +356,7 @@ class MySceneGraph {
      * Parses the <light> node.
      * @param {lights block element} lightsNode
      */
-    parseLights(lightsNode) {//TODO lights not working
+    parseLights(lightsNode) {
         var children = lightsNode.children;
 
         this.lights = [];
@@ -474,6 +477,8 @@ class MySceneGraph {
     parseTextures(texturesNode) {
         this.textures = new Array();
         var children = texturesNode.children;
+        if (children.length == 0)
+            this.onXMLError("No textures found");
         for (var i = 0; i < children.length; i++) {
             var textureID = this.reader.getString(children[i], 'id');
             if (textureID == null) {
@@ -502,6 +507,8 @@ class MySceneGraph {
 
         this.materials = [];
 
+        if (children.length == 0)
+            this.onXMLError("No materials found");
         // Any number of materials.
         for (var i = 0; i < children.length; i++) {
 
@@ -524,7 +531,7 @@ class MySceneGraph {
             if (!(shininess != null && !isNaN(shininess)))
                 return "unable to parse shininess of the material for ID = " + materialID;
 
-            var grandChildren=children[i].children;
+            var grandChildren = children[i].children;
             if (grandChildren[0].nodeName != "emission" || grandChildren[1].nodeName != "ambient" || grandChildren[2].nodeName != "diffuse" || grandChildren[3].nodeName != "specular")
                 return "Material with ID = " + materialID + "has wrong children components ";
             var emission = this.parseColor(grandChildren[0], "emission of the material with ID = " + materialID);
@@ -553,6 +560,9 @@ class MySceneGraph {
     parseTransformations(transformationsNode) {
         var children = transformationsNode.children;
 
+        if (children.length == 0)
+            this.onXMLError("No transformations found");
+
         this.transformations = [];
 
         var grandChildren = [];
@@ -576,6 +586,9 @@ class MySceneGraph {
 
             grandChildren = children[i].children;
             // Specifications for the current transformation.
+
+            if (grandChildren.length == 0)
+                this.onXMLError("No transformations found for transformation " + transformationID);
 
             this.transformations[transformationID] = this.parseTransformationsAux(grandChildren);
         }
@@ -625,15 +638,6 @@ class MySceneGraph {
                             return "unable to parse axis of the rotation";
                     }
                     break;
-                case 'transformationref':
-                    var id = this.reader.getString(grandChildren[j], 'id');
-                    transfMatrix = this.transformations[id];
-                    if (this.transformations[id] != null) {
-                        transfMatrix= this.transformations[id];
-                    } else {
-                        this.onXMLMinorError("No trasformation for ID : " + id);
-                    }
-                    break;
                 default:
                     this.onXMLError("The transformation must be one of three types (translate, rotate, scale).");
 
@@ -649,6 +653,9 @@ class MySceneGraph {
      */
     parsePrimitives(primitivesNode) {
         var children = primitivesNode.children;
+
+        if (children.length == 0)
+            this.onXMLError("No primitives found");
 
         this.primitives = [];
 
@@ -881,19 +888,37 @@ class MySceneGraph {
             var childrenIndex = nodeNames.indexOf("children");
 
             // Transformations
-            var transformation = this.parseTransformationsAux(grandChildren[transformationIndex].children);
+            if (transformationIndex != 0) this.onXMLError("Transformations for component " + componentID + " not found");
+            if (grandChildren[transformationIndex].children[0].nodeName == 'transformationref') {
+                var id = this.reader.getString(grandChildren[transformationIndex].children[0], 'id');
+                if (this.transformations[id] != null)
+                    var transformation = this.transformations[id];
+                else
+                    this.onXMLMinorError("No trasformation for ID : " + id);
+            }
+            else
+                var transformation = this.parseTransformationsAux(grandChildren[transformationIndex].children);
 
             // Materials
+            if (materialsIndex != 1) this.onXMLError("Material for component " + componentID + " not found");
             var materialID = this.reader.getString(grandChildren[materialsIndex].children[0], 'id');
             if (materialID != "inherit" && this.materials[materialID] == null) {
                 this.onXMLMinorError("No material for ID : " + materialID);
             }
             // Texture //TODO add coords
+            if (textureIndex != 2) this.onXMLError("Texture for component " + componentID + " not found");
             var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
             if (textureID != "none" && textureID != "inherit" && this.textures[textureID] == null) {
                 this.onXMLMinorError("No texture for ID : " + textureID);
             }
+            var textureLenghtS = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false);
+            var textureLenghtT = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false);
+
+            //if (textureLenghtS==null||)
+
             // Children
+            if (childrenIndex != 3) this.onXMLError("Children for component " + componentID + " not found");
+
             grandgrandChildren = grandChildren[childrenIndex].children;
             var leaves = new Array;
             var componentchildren = new Array;
@@ -1036,7 +1061,6 @@ class MySceneGraph {
      */
     displayScene() {
         this.displayComponent(this.idRoot, null);
-        //this.primitives['demoRectangle'].display();
     }
 
     displayComponent(componentID, oldMaterial) {
@@ -1060,7 +1084,7 @@ class MySceneGraph {
             this.primitives[component.leaves[i]].display();
 
         for (var i in component.children)
-           this.displayComponent(component.children[i],material);
+            this.displayComponent(component.children[i], material);
         this.scene.popMatrix();
 
     }

@@ -13,8 +13,8 @@
     </views>
 
     <ambient>
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+        <ambient r="0.2" g="0.2" b="0.2" a="0.1" />
+        <background r="0.0" g="0.0" b="0.0" a="1" />
     </ambient>
 
     <lights>
@@ -24,13 +24,13 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
-        <spot id="spotLight" enabled="1" angle="0.785" exponent="5">
+        <spot id="spotLight" enabled="0" angle="30" exponent="5">
             <!-- atencao, "target" e' diferente de "direction" -->
-            <location x="0" y="5" z="5" w="1.0" />
-            <target x="30" y="30" z="30" />
-            <ambient r="0" g="0" b="0" a="1" />
-            <diffuse r="0.7" g="0.5" b="0.3" a="1.0" />
-            <specular r="0.3" g="0.5" b="0.7" a="1.0" />
+            <location x="1" y="1" z="1" w="0.0" />
+            <target x="-1" y="0" z="0.5" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1" />
+            <diffuse r="0.7" g="0.5" b="0.7" a="1.0" />
+            <specular r="0.7" g="0.5" b="0.7" a="1.0" />
             <attenuation constant="0.05" linear="0.2" quadratic="0" />
         </spot>
     </lights>
@@ -45,9 +45,9 @@
 
     <materials>
         <material id="yellowMaterial" shininess="10">
-            <emission r="1.0" g="1.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="1.0" b="0.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="0.0" a="1.0" />
+            <emission r="0.2" g="0.2" b="0.0" a="1.0" />
+            <ambient r="0.4" g="0.4" b="0.0" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.0" a="1.0" />
             <specular r="1.0" g="1.0" b="0.0" a="1.0" />
         </material>
         <material id="redMaterial" shininess="10">
