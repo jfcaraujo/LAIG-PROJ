@@ -2,8 +2,8 @@
  * MyTorus
  * @constructor
  */
-class MyTorus extends CGFobject {
-	constructor(scene, id, inner, outer, slices, loops) {
+class MyTorus extends CGFobject{
+	constructor(scene, id, inner, outer, slices, loops){
 		super(scene);
 
 		this.inner = inner
@@ -14,16 +14,17 @@ class MyTorus extends CGFobject {
 		this.initBuffers();
 	};
 
-	initBuffers() {
+	initBuffers(){
 		this.vertices = [];
 		this.indices = [];
 		this.normals = [];
 		this.texCoords = [];
+		this.defaultTexCoords = [];
 
-		for (var i = 0; i <= this.loops; i++) {
+		for (var i = 0; i <= this.loops; i++){
 			var l = i * 2 * Math.PI / this.loops;
 
-			for (var j = 0; j <= this.slices; j++) {
+			for (var j = 0; j <= this.slices; j++){
 				var s = j * 2 * Math.PI / this.slices;
 
 				this.vertices.push((this.outer + (this.inner * Math.cos(l))) * Math.cos(s), (this.outer + (this.inner * Math.cos(l))) * Math.sin(s), this.inner * Math.sin(l));
@@ -38,7 +39,19 @@ class MyTorus extends CGFobject {
 			
 		}
 
+		this.defaultTexCoords = this.texCoords;
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
+	};
+
+	updateTexCoords(s,t){
+		this.texCoords = this.defaultTexCoords.slice();
+
+		 for(var i = 0; i < this.texCoords.length; i+=2){
+			this.texCoords[i] /= s;
+			this.texCoords[i+1] /= t;
+		}
+
+		 this.updateTexCoordsGLBuffers();
 	};
 };
