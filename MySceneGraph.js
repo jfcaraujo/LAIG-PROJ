@@ -917,10 +917,8 @@ class MySceneGraph {
             var textureLenghtS = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false);
             var textureLenghtT = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false);
 
-            if (textureLenghtS == null || textureLenghtT == null)
-
-                // Children
-                if (childrenIndex != 3) this.onXMLError("Children for component " + componentID + " not found");
+            // Children
+            if (childrenIndex != 3) this.onXMLError("Children for component " + componentID + " not found");
 
             grandgrandChildren = grandChildren[childrenIndex].children;
             var leaves = new Array;
@@ -941,7 +939,7 @@ class MySceneGraph {
                     this.onXMLMinorError("unknown tag <" + grandgrandChildren[x].nodeName + ">");
                 }
             }
-            var component = new MyComponent(this.scene, componentID, transformation, materialID, textureID, componentchildren, leaves);
+            var component = new MyComponent(this.scene, componentID, transformation, materialID, textureID, textureLenghtS, textureLenghtT, componentchildren, leaves);
             this.components[componentID] = component;
         }
         this.log("Parsed components");
@@ -1078,25 +1076,33 @@ class MySceneGraph {
         if (component.currentMaterialID != 'inherit')
             material = this.materials[component.currentMaterialID];
         if (material != null) {
-            if (component.texture == 'inherit')
+            if (component.texture == 'inherit') {
                 material.setTexture(this.textures[parentComponent.texture]);
+                component.length_s = parentComponent.length_s;
+                component.length_t = parentComponent.length_t;
+            }
             else if (component.materials == 'none')
                 material.setTexture(null);
             else
                 material.setTexture(this.textures[component.texture]);
+
             material.apply();
         }
 
-        for (var i in component.leaves)
+        for (var i in component.leaves) {
+            if (component.length_s == null || component.length_t == null)
+                this.primitives[component.leaves[i]].updateTexCoords(1, 1);
+            else
+                this.primitives[component.leaves[i]].updateTexCoords(component.length_s, component.length_t)
             this.primitives[component.leaves[i]].display();
-
+        }
         for (var i in component.children)
             this.displayComponent(component.children[i], component);
         this.scene.popMatrix();
 
     }
 
-    changeTexture(){
+    changeTexture() {
         for (var i in this.components)
             this.components[i].updateMaterial();
     }

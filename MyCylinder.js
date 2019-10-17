@@ -46,13 +46,5 @@ class MyCylinder extends CGFobject {
     this.initGLBuffers();
   }
 
-  updateTexCoords(s, t) {//2,2
-    this.texCoords = [];//stacks=2,slices=4
-    for (var x = 0; x <= this.stacks; x++) {
-      for (var i = 0; i < pointsPerStack; i++) {
-        this.texCoords.push((i / s / this.slices) % 1, (x / t * stackHeight) % 1);
-      }
-    }
-    this.updateTexCoordsGLBuffers();
-  }
+  updateTexCoords(s, t) { }
 }
