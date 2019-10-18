@@ -908,7 +908,7 @@ class MySceneGraph {
                     this.onXMLMinorError("No material for ID : " + materialID[x]);
                 }
             }
-            // Texture //TODO add coords
+            // Texture
             if (textureIndex != 2) this.onXMLError("Texture for component " + componentID + " not found");
             var textureID = this.reader.getString(grandChildren[textureIndex], 'id');
             if (textureID != "none" && textureID != "inherit" && this.textures[textureID] == null) {
@@ -1062,6 +1062,7 @@ class MySceneGraph {
      */
     displayScene() {
         this.displayComponent(this.idRoot, null);
+        this.setDefaultAppearance();
     }
 
     displayComponent(componentID, parentComponent) {
@@ -1105,5 +1106,12 @@ class MySceneGraph {
     changeTexture() {
         for (var i in this.components)
             this.components[i].updateMaterial();
+    }
+
+    setDefaultAppearance() {
+        this.scene.setAmbient(0.2, 0.4, 0.8, 1.0);
+        this.scene.setDiffuse(0.2, 0.4, 0.8, 1.0);
+        this.scene.setSpecular(0.2, 0.4, 0.8, 1.0);
+        this.scene.setShininess(10.0);
     }
 }

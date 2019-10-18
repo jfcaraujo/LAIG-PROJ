@@ -101,7 +101,10 @@ class MyTriangle extends CGFobject {
         this.texCoords = [
             0, d / t,
             d1 / s, d / t,
-            (d1 - d2 * Math.cos(angle)) / s, (d - d2 * Math.sin(angle)) / t
+            (d1 - d2 * Math.cos(angle)) / s, (d - d2 * Math.sin(angle)) / t,
+            1, d / t,
+            (1- d1) / s, d / t,
+            (1-(d1 - d2 * Math.cos(angle))) / s, (d - d2 * Math.sin(angle)) / t
         ];
 
         this.updateTexCoordsGLBuffers();

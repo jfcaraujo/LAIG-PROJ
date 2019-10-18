@@ -41,6 +41,7 @@
         <texture id="leavesTexture" file="scenes/images/leaves.jpg" />
         <texture id="rockTexture" file="scenes/images/rocks.jpg" />
         <texture id="trunkTexture" file="scenes/images/trunk-image.jpg" />
+        <texture id="feup" file="scenes/images/feup.png"/>
     </textures>
 
     <materials>
@@ -204,7 +205,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="feup" length_s="0.5" length_t="1"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -216,7 +217,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" length_s="0.5" length_t="0.5"/><!--para mostrar que ignora os valores -->
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -275,7 +276,7 @@
             <materials>
                 <material id="yellowMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="feup"/>
             <children>
                 <primitiveref id="triangle" />
                 <componentref id="smalltriangle"/>
