@@ -41,47 +41,42 @@ class MyTriangle extends CGFobject {
             ];
 
         this.indices = [
-            0, 1, 2, 
+            0, 1, 2,
             0, 2, 1
         ];
 
-        var V21 = vec3.create();  //vetor do ponto 1 ao ponto 2
-        var V21 = [this.v2[0] - this.v1[0],
-        this.v2[1] - this.v1[1],
-        this.v2[2] - this.v1[2]];
+        var n1 = [this.x2 - this.x1, this.y2 - this.y1, this.z2 - this.z1];
+        var n2 = [this.x3 - this.x1, this.y3 - this.y1, this.z3 - this.z1];
 
-        var V32 = vec3.create(); //vetor do ponto 2 ao ponto 3
-        var V32 = [this.v3[0] - this.v2[0],
-        this.v3[1] - this.v2[1],
-        this.v3[2] - this.v3[2]];
+        var nx = n1[1] * n2[2] - n1[2] * n2[1];
+        var ny = n1[2] * n2[0] - n1[0] * n2[2];
+        var nz = n1[0] * n2[1] - n1[1] * n2[0];
 
-        var N = vec3.create() //n - normal ao triangulo
-        vec3.cross(N, V21, V32);
-        vec3.normalize(N, N);
 
         this.normals = [
-            N[0], N[1], N[2],
-            N[0], N[1], N[2],
-            N[0], N[1], N[2],
-            -N[0], -N[1], -N[2],
-            -N[0], -N[1], -N[2],
-            -N[0], -N[1], -N[2]];
+            nx, ny, nz,
+            nx, ny, nz,
+            nx, ny, nz,
+            -nx, -ny, -nz,
+            -nx, -ny, -nz,
+            -nx, -ny, -nz];
 
-        var d1 = Math.sqrt(Math.pow(this.v2[0] - this.v1[0], 2) + Math.pow(this.v2[1] - this.v1[1], 2) + Math.pow(this.v2[2] - this.v1[2], 2));
-        var d2 = Math.sqrt(Math.pow(this.v2[0] - this.v3[0], 2) + Math.pow(this.v2[1] - this.v3[1], 2) + Math.pow(this.v2[2] - this.v3[2], 2));
-        var d3 = Math.sqrt(Math.pow(this.v1[0] - this.v3[0], 2) + Math.pow(this.v1[1] - this.v3[1], 2) + Math.pow(this.v1[2] - this.v3[2], 2));
+        this.a = Math.sqrt(Math.pow((this.x2 - this.x1), 2) + Math.pow((this.y2 - this.y1), 2) + Math.pow((this.z2 - this.z1), 2));
+        this.b = Math.sqrt(Math.pow((this.x3 - this.x2), 2) + Math.pow((this.y3 - this.y2), 2) + Math.pow((this.z3 - this.z2), 2));
+        this.c = Math.sqrt(Math.pow((this.x1 - this.x3), 2) + Math.pow((this.y1 - this.y3), 2) + Math.pow((this.z1 - this.z3), 2));
 
-        var angle = Math.acos((Math.pow(d2, 2) - Math.pow(d3, 2) + Math.pow(d1, 2)) / (2 * d2 * d1));
+        this.cos_a = (Math.pow(this.a, 2) - Math.pow(this.b, 2) + Math.pow(this.c, 2)) / (2 * this.a * this.c);
+        this.sin_a = Math.sqrt(1 - Math.pow(this.cos_a, 2));
 
-        var d = d2 * Math.sin(angle);
+
 
         this.texCoords = [
-            0, d,
-            d1, d,
-            (d1 - d2 * Math.cos(angle)), (d - d2 * Math.sin(angle)),
-            1, d,
-            1 - d1, d,
-            1 - (d1 - d2 * Math.cos(angle)), (d - d2 * Math.sin(angle))
+            0, 0,
+            this.a, 0,//1,0
+            this.c * this.cos_a, this.c * this.sin_a,//this.c*this.cos_a,1
+            1, 0,
+            1 - this.a, 0,
+            1 - this.c * this.cos_a, this.c * this.sin_a
         ];
 
         this.primitiveType = this.scene.gl.TRIANGLES;
@@ -90,21 +85,13 @@ class MyTriangle extends CGFobject {
 
     updateTexCoords(s, t) {
 
-        var d1 = Math.sqrt(Math.pow(this.v2[0] - this.v1[0], 2) + Math.pow(this.v2[1] - this.v1[1], 2) + Math.pow(this.v2[2] - this.v1[2], 2)); //d1: 1-2
-        var d2 = Math.sqrt(Math.pow(this.v2[0] - this.v3[0], 2) + Math.pow(this.v2[1] - this.v3[1], 2) + Math.pow(this.v2[2] - this.v3[2], 2)); //d2: 2-3
-        var d3 = Math.sqrt(Math.pow(this.v1[0] - this.v3[0], 2) + Math.pow(this.v1[1] - this.v3[1], 2) + Math.pow(this.v1[2] - this.v3[2], 2)); //d3: 3-1
-
-        var angle = Math.acos((Math.pow(d2, 2) - Math.pow(d3, 2) + Math.pow(d1, 2)) / (2 * d2 * d1));
-
-        var d = d2 * Math.sin(angle);
-
         this.texCoords = [
-            0, d / t,
-            d1 / s, d / t,
-            (d1 - d2 * Math.cos(angle)) / s, (d - d2 * Math.sin(angle)) / t,
-            1, d / t,
-            (1- d1) / s, d / t,
-            (1-(d1 - d2 * Math.cos(angle))) / s, (d - d2 * Math.sin(angle)) / t
+            0, 0,
+            this.a / s, 0,
+            this.c * this.cos_a / s, this.c * this.sin_a / t,
+            1, 0,
+            1 - this.a / s, 0,
+            1 - this.c * this.cos_a / s, this.c * this.sin_a / t
         ];
 
         this.updateTexCoordsGLBuffers();

@@ -276,7 +276,7 @@
             <materials>
                 <material id="yellowMaterial" />
             </materials>
-            <texture id="feup"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="triangle" />
                 <componentref id="smalltriangle"/>
