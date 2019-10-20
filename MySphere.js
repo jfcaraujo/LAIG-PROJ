@@ -51,14 +51,6 @@ class MySphere extends CGFobject {
 	* @param {number} t represents the amount of times the texture will be repeated in the t coordinate
 	*/
 	updateTexCoords(s, t) {
-		this.texCoords = this.defaultTexCoords.slice();
-
-		for (var i = 0; i < this.texCoords.length; i += 2) {
-			this.texCoords[i] /= s;
-			this.texCoords[i + 1] /= t;
-		}
-
-		this.updateTexCoordsGLBuffers();
 	};
 
 };
