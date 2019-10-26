@@ -113,11 +113,11 @@ class MySceneGraph {
         }
 
         // <ambient>
-        if ((index = nodeNames.indexOf("ambient")) == -1)
-            return "tag <ambient> missing";
+        if ((index = nodeNames.indexOf("globals")) == -1)
+            return "tag <globals> missing";
         else {
             if (index != AMBIENT_INDEX)
-                this.onXMLMinorError("tag <ambient> out of order");
+                this.onXMLMinorError("tag <globals> out of order");
 
             //Parse ambient block
             if ((error = this.parseAmbient(nodes[index])) != null)
@@ -535,9 +535,9 @@ class MySceneGraph {
             if (grandChildren[0].nodeName != "emission" || grandChildren[1].nodeName != "ambient" || grandChildren[2].nodeName != "diffuse" || grandChildren[3].nodeName != "specular")
                 return "Material with ID = " + materialID + "has wrong children components ";
             var emission = this.parseColor(grandChildren[0], "emission of the material with ID = " + materialID);
-            var ambient = this.parseColor(grandChildren[0], "ambient of the material with ID = " + materialID);
-            var diffuse = this.parseColor(grandChildren[0], "diffuse of the material with ID = " + materialID);
-            var specular = this.parseColor(grandChildren[0], "specular of the material with ID = " + materialID);
+            var ambient = this.parseColor(grandChildren[1], "ambient of the material with ID = " + materialID);
+            var diffuse = this.parseColor(grandChildren[2], "diffuse of the material with ID = " + materialID);
+            var specular = this.parseColor(grandChildren[3], "specular of the material with ID = " + materialID);
 
             var material = new CGFappearance(this.scene);
             material.setTextureWrap("REPEAT", "REPEAT");
@@ -889,7 +889,11 @@ class MySceneGraph {
 
             // Transformations
             if (transformationIndex != 0) this.onXMLError("Transformations for component " + componentID + " not found");
-            if (grandChildren[transformationIndex].children[0].nodeName == 'transformationref') {
+            if (grandChildren[transformationIndex].children.length == 0) {
+                var transformation = mat4.create();
+                transformation = mat4.translate(transformation, transformation, [0, 0, 0]);
+            }
+            else if (grandChildren[transformationIndex].children[0].nodeName == 'transformationref') {
                 var id = this.reader.getString(grandChildren[transformationIndex].children[0], 'id');
                 if (this.transformations[id] != null)
                     var transformation = this.transformations[id];
@@ -1078,6 +1082,7 @@ class MySceneGraph {
             material = this.materials[component.currentMaterialID];
         if (material != null) {
             if (component.texture == 'inherit') {
+                component.texture = parentComponent.texture;
                 material.setTexture(this.textures[parentComponent.texture]);
                 component.length_s = parentComponent.length_s;
                 component.length_t = parentComponent.length_t;

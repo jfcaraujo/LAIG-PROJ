@@ -24,7 +24,6 @@ class MyTriangle extends CGFobject {
         this.v3 = vec3.fromValues(x3, y3, z3);
 
         this.initBuffers();
-        this.defaultTexCoords = [];
     };
 
 

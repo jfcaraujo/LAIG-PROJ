@@ -12,7 +12,6 @@ class MySphere extends CGFobject {
 		this.indices = [];
 		this.normals = [];
 		this.texCoords = [];
-		this.defaultTexCoords = [];
 		this.initBuffers();
 	};
 
@@ -40,7 +39,6 @@ class MySphere extends CGFobject {
 			}
 		}
 
-		//this.defaultTexCoords = this.texCoords;
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	};

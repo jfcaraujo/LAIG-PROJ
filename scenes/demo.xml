@@ -12,10 +12,10 @@
         </ortho>
     </views>
 
-    <ambient>
+    <globals>
         <ambient r="0.2" g="0.2" b="0.2" a="0.1" />
         <background r="0.0" g="0.0" b="0.0" a="1" />
-    </ambient>
+    </globals>
 
     <lights>
         <omni id="demoLight" enabled="1">
@@ -205,7 +205,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="feup" length_s="0.5" length_t="1"/>
+            <texture id="inherit" length_s="0.5" length_t="1"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -229,7 +229,7 @@
             <materials>
                 <material id="brownMaterial" />
             </materials>
-            <texture id="trunkTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="tabletop" />
                 <componentref id="tabletop2" />
@@ -291,7 +291,7 @@
             <materials>
                 <material id="brownMaterial" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="trunkTexture"/>
             <children>
                 <componentref id="triforce"/>
                 <componentref id="planet"/>
