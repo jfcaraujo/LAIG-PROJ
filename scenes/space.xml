@@ -134,7 +134,7 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive>
         <primitive id="sphere">
-            <sphere radius="1" slices="20" stacks="20"/>
+            <sphere radius="1" slices="28" stacks="8"/>
         </primitive>
         <primitive id="torus">
             <torus inner="0.1" outer="0.9" slices="20" loops="40"/>
