@@ -31,17 +31,17 @@ class MyInterface extends CGFinterface {
      * initKeys
      */
     initKeys() {
-        this.scene.gui=this;
-        this.processKeyboard=function(){};
-        this.activeKeys={};
+        this.scene.gui = this;
+        this.processKeyboard = function () { };
+        this.activeKeys = {};
     }
 
     processKeyDown(event) {
-        this.activeKeys[event.code]=true;
+        this.activeKeys[event.code] = true;
     };
 
     processKeyUp(event) {
-        this.activeKeys[event.code]=false;
+        this.activeKeys[event.code] = false;
         if (event.code == "KeyM")
             this.scene.graph.changeTexture();
     };
@@ -63,10 +63,10 @@ class MyInterface extends CGFinterface {
     addLights(lights) {
         var folder = this.gui.addFolder("Lights");
         folder.open();
-        var i=0;
+        var i = 0;
         for (var key in lights) {
             if (lights.hasOwnProperty(key)) {
-                folder.add(this.scene.lights[i], 'enabled').name("Light["+i+"]");
+                folder.add(this.scene.lights[i], 'enabled').name(key);
             }
             i++;
         }

@@ -1065,35 +1065,32 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.displayComponent(this.idRoot, null);
-        this.setDefaultAppearance();
+        this.displayComponent(this.idRoot, null, null, 1, 1);
     }
 
-    displayComponent(componentID, parentComponent) {
+    displayComponent(componentID, material, texture, s, t) {
         if (this.components[componentID] == null)
             this.onXMLMinorError("No component for ID : " + componentID);
         var component = this.components[componentID];
-        var material = null;
-        if (parentComponent != null)
-            material = this.materials[parentComponent.currentMaterialID];
         this.scene.pushMatrix();
         this.scene.multMatrix(component.transformation);
+
         if (component.currentMaterialID != 'inherit')
             material = this.materials[component.currentMaterialID];
-        if (material != null) {
-            if (component.texture == 'inherit') {
-                component.texture = parentComponent.texture;
-                material.setTexture(this.textures[parentComponent.texture]);
-                component.length_s = parentComponent.length_s;
-                component.length_t = parentComponent.length_t;
-            }
-            else if (component.materials == 'none')
-                material.setTexture(null);
-            else
-                material.setTexture(this.textures[component.texture]);
 
-            material.apply();
+        if (component.texture == 'inherit') {
+            material.setTexture(this.textures[texture]);
+            component.length_s = s;
+            component.length_t = t;
         }
+        else if (component.texture == 'none')
+            material.setTexture(null);
+        else {
+            texture = component.texture;
+            material.setTexture(this.textures[texture]);
+        }
+        material.apply();
+        material.setTexture(null);
 
         for (var i in component.leaves) {
             if (component.length_s == null || component.length_t == null)
@@ -1103,9 +1100,8 @@ class MySceneGraph {
             this.primitives[component.leaves[i]].display();
         }
         for (var i in component.children)
-            this.displayComponent(component.children[i], component);
+            this.displayComponent(component.children[i], material, texture, s, t);
         this.scene.popMatrix();
-
     }
 
     changeTexture() {
@@ -1113,10 +1109,4 @@ class MySceneGraph {
             this.components[i].updateMaterial();
     }
 
-    setDefaultAppearance() {
-        this.scene.setAmbient(0.2, 0.4, 0.8, 1.0);
-        this.scene.setDiffuse(0.2, 0.4, 0.8, 1.0);
-        this.scene.setSpecular(0.2, 0.4, 0.8, 1.0);
-        this.scene.setShininess(10.0);
-    }
 }
