@@ -56,7 +56,7 @@ class MyRectangle extends CGFobject {
 			this.width, this.height,
 			0, 0,
 			this.width, 0
-		]
+		];
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	}

@@ -4,7 +4,7 @@
  * @param scene - Reference to MyScene object
  */
 class MyComponent extends CGFobject {
-    constructor(scene, id, transformation, materials, texture, length_s, length_t, children, leaves) {
+    constructor(scene, id, transformation, materials, texture, length_s, length_t, children, leaves, animationID) {
         super(scene);
         this.scene = scene;
         this.id = id;
@@ -17,6 +17,7 @@ class MyComponent extends CGFobject {
         this.length_t = length_t;
         this.children = children;
         this.leaves = leaves;
+        this.animationID = animationID;
     }
 
     updateMaterial() {

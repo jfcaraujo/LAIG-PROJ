@@ -44,12 +44,12 @@ class MyTriangle extends CGFobject {
             0, 2, 1
         ];
 
-        var n1 = [this.x2 - this.x1, this.y2 - this.y1, this.z2 - this.z1];
-        var n2 = [this.x3 - this.x1, this.y3 - this.y1, this.z3 - this.z1];
+        const n1 = [this.x2 - this.x1, this.y2 - this.y1, this.z2 - this.z1];
+        const n2 = [this.x3 - this.x1, this.y3 - this.y1, this.z3 - this.z1];
 
-        var nx = n1[1] * n2[2] - n1[2] * n2[1];
-        var ny = n1[2] * n2[0] - n1[0] * n2[2];
-        var nz = n1[0] * n2[1] - n1[1] * n2[0];
+        const nx = n1[1] * n2[2] - n1[2] * n2[1];
+        const ny = n1[2] * n2[0] - n1[0] * n2[2];
+        const nz = n1[0] * n2[1] - n1[1] * n2[0];
 
 
         this.normals = [
@@ -95,4 +95,4 @@ class MyTriangle extends CGFobject {
 
         this.updateTexCoordsGLBuffers();
     };
-};
+}

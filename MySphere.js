@@ -20,11 +20,11 @@ class MySphere extends CGFobject {
 
 	initBuffers() {
 
-		var s = (2 * Math.PI) / this.slices;
-		var l = (2 * Math.PI) / this.stacks;
+        const s = (2 * Math.PI) / this.slices;
+        const l = (2 * Math.PI) / this.stacks;
 
-		for (var i = 0; i <= this.stacks; i++) {
-			for (var j = 0; j <= this.slices; j++) {
+        for (let i = 0; i <= this.stacks; i++) {
+			for (let j = 0; j <= this.slices; j++) {
 
 				this.vertices.push(
 					(this.radius * Math.cos(s * j)) * Math.sin(l * i),
@@ -52,4 +52,4 @@ class MySphere extends CGFobject {
 	updateTexCoords(s, t) {
 	};
 
-};
+}

@@ -19,17 +19,17 @@ class MyCylinder extends CGFobject {
     this.normals = [];
     this.texCoords = [];
 
-    var radiusDif = this.radiusBase - this.radiusTop;
-    var ang = 0;
-    var alphaAng = (2 * Math.PI) / this.slices;
-    var normAng = Math.atan(radiusDif / this.height);
+    const radiusDif = this.radiusBase - this.radiusTop;
+    let ang = 0;
+    const alphaAng = (2 * Math.PI) / this.slices;
+    const normAng = Math.atan(radiusDif / this.height);
     this.stackHeight = this.height / this.stacks;
-    var radius = this.radiusBase;
+    let radius = this.radiusBase;
     this.pointsPerStack = this.slices + 1;
 
-    for (var x = 0; x <= this.stacks; x++) {
+    for (let x = 0; x <= this.stacks; x++) {
       ang = 0;
-      for (var i = 0; i < this.pointsPerStack; i++) {
+      for (let i = 0; i < this.pointsPerStack; i++) {
         this.vertices.push(radius * Math.cos(ang), -Math.sin(ang) * radius, this.stackHeight * x);
         if (x > 0 && i > 0) {
           this.indices.push((x - 1) * this.pointsPerStack + i - 1, x * this.pointsPerStack + i - 1, x * this.pointsPerStack + i);

@@ -51,7 +51,7 @@ class MyInterface extends CGFinterface {
     }
 
     addViews(views) {
-        var folder = this.gui.addFolder("Views");
+        const folder = this.gui.addFolder("Views");
         folder.open();
 
         const cameraIdArray = Object.keys(views);
@@ -61,10 +61,10 @@ class MyInterface extends CGFinterface {
     }
 
     addLights(lights) {
-        var folder = this.gui.addFolder("Lights");
+        const folder = this.gui.addFolder("Lights");
         folder.open();
-        var i = 0;
-        for (var key in lights) {
+        let i = 0;
+        for (let key in lights) {
             if (lights.hasOwnProperty(key)) {
                 folder.add(this.scene.lights[i], 'enabled').name(key);
             }

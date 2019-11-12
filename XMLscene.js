@@ -1,12 +1,10 @@
-var DEGREE_TO_RAD = Math.PI / 180;
-
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
 class XMLscene extends CGFscene {
     /**
      * @constructor
-     * @param {MyInterface} myinterface 
+     * @param {MyInterface} myinterface
      */
     constructor(myinterface) {
         super();
@@ -42,20 +40,21 @@ class XMLscene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
+
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        var i = 0;
+        let i = 0;
         // Lights index.
 
         // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
+        for (let key in this.graph.lights) {
             if (i >= 8)
                 break;              // Only eight lights allowed by WebGL.
 
             if (this.graph.lights.hasOwnProperty(key)) {
-                var light = this.graph.lights[key];
+                const light = this.graph.lights[key];
 
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
                 this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
@@ -94,7 +93,8 @@ class XMLscene extends CGFscene {
         this.setShininess(10.0);
 
     }
-    /** Handler called when the graph is finally loaded. 
+
+    /** Handler called when the graph is finally loaded.
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
@@ -135,7 +135,7 @@ class XMLscene extends CGFscene {
         this.pushMatrix();
         this.axis.display();
 
-        for (var i = 0; i < this.lights.length; i++) {
+        for (let i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(true);
             this.lights[i].update();
         }
@@ -150,5 +150,18 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+    update(t) {
+        if (!this.time) {
+            this.time = t;
+            return;
+        }
+        const time = t - this.time;
+
+        if (this.sceneInited) {
+            for (let key in this.graph.animations)
+                this.graph.animations[key].update(time);
+        }
     }
 }

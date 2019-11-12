@@ -20,13 +20,13 @@ class MyTorus extends CGFobject {
 		this.normals = [];
 		this.texCoords = [];
 
-		for (var i = 0; i <= this.loops; i++) {
-			var l = i * 2 * Math.PI / this.loops;
+		for (let i = 0; i <= this.loops; i++) {
+            const l = i * 2 * Math.PI / this.loops;
 
-			for (var j = 0; j <= this.slices; j++) {
-				var s = j * 2 * Math.PI / this.slices;
+            for (let j = 0; j <= this.slices; j++) {
+                const s = j * 2 * Math.PI / this.slices;
 
-				this.vertices.push((this.outer + this.inner * Math.cos(s)) * Math.cos(l), (this.outer + this.inner * Math.cos(s)) * Math.sin(l), this.inner * Math.sin(s));
+                this.vertices.push((this.outer + this.inner * Math.cos(s)) * Math.cos(l), (this.outer + this.inner * Math.cos(s)) * Math.sin(l), this.inner * Math.sin(s));
 				this.normals.push((this.inner * Math.cos(s)) * Math.cos(l), (this.inner * Math.cos(s)) * Math.sin(l), this.inner * Math.sin(s));
 				this.texCoords.push(1 - (j / this.slices), 1 - (i / this.loops));
 
@@ -43,6 +43,6 @@ class MyTorus extends CGFobject {
 	};
 
 	updateTexCoords(s, t) { };
-};
+}
 
 

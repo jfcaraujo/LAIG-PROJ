@@ -8,9 +8,9 @@ class MyPlane extends CGFobject {
     }
 
     initBuffers(u, v) {
-        var x, y;
-        var xdiff = 1.0 / u;
-        var ydiff = 1.0 / v;
+        let x, y;
+        const xdiff = 1.0 / u;
+        const ydiff = 1.0 / v;
         for (x = 0; x < u; x++) {
             for (y = 0; y < v; y++) {
                 this.vertices.push(xdiff * x, ydiff * y);
