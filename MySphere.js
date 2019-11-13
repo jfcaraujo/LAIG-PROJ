@@ -21,7 +21,7 @@ class MySphere extends CGFobject {
 	initBuffers() {
 
         const s = (2 * Math.PI) / this.slices;
-        const l = (2 * Math.PI) / this.stacks;
+        const l = Math.PI / this.stacks;
 
         for (let i = 0; i <= this.stacks; i++) {
 			for (let j = 0; j <= this.slices; j++) {
