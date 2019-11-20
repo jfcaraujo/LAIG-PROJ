@@ -2,7 +2,7 @@
 include = function () {
     function f() {
         const a = this.readyState;
-        (!a || /ded|te/.test(a)) && (c--, !c && e && d())
+        (!a || /ded|te/.test(a)) && (c-- , !c && e && d())
     }
 
     var a = arguments, b = document, c = a.length, d = a[c - 1], e = d.call;
@@ -40,7 +40,7 @@ function getUrlVars() {
 }
 
 //Include additional files here
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'MyRectangle.js', 'MyTriangle.js', 'MyTorus.js', 'MySphere.js', 'MyCylinder.js', 'MyComponent.js', 'Animation.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'primitives/MyRectangle.js', 'primitives/MyTriangle.js', 'primitives/MyTorus.js', 'primitives/MySphere.js', 'primitives/MyCylinder.js', 'MyComponent.js', 'Animation.js', 'MySecurityCamera.js',
 
     main = function () {
         // Standard application, scene and interface setup

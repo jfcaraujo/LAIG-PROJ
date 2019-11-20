@@ -56,8 +56,9 @@ class MyInterface extends CGFinterface {
 
         const cameraIdArray = Object.keys(views);
         this.currentCameraId = this.scene.graph.defaultCameraId;
-
-        folder.add(this, 'currentCameraId', cameraIdArray).name('Camera').onChange(val => this.scene.selectView(val));
+        this.securityCameraId = this.scene.graph.defaultCameraId;
+        folder.add(this, 'currentCameraId', cameraIdArray).name('Camera');
+        folder.add(this, 'securityCameraId', cameraIdArray).name('Camera');
     }
 
     addLights(lights) {
