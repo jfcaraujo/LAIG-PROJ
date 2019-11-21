@@ -34,7 +34,7 @@ class XMLscene extends CGFscene {
         this.setUpdatePeriod(100);
         this.textureRTT = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
         this.securityCamera = new MySecurityCamera(this);
-        this.shader = new CGFshader(this.gl, "scenes/text.vert", "scenes/text.frag");
+
     }
 
     /**
@@ -124,9 +124,10 @@ class XMLscene extends CGFscene {
             this.render(this.interface.securityCameraId);
             this.textureRTT.detachFromFrameBuffer();
             this.render(this.interface.currentCameraId);
-            this.gl.depthFunc(this.gl.NEVER);
+
+            this.gl.disable(this.gl.DEPTH_TEST);
             this.securityCamera.display();
-            this.gl.depthFunc(this.gl.LEQUAL);
+            this.gl.enable(this.gl.DEPTH_TEST);
         }
     }
     /**
@@ -173,6 +174,7 @@ class XMLscene extends CGFscene {
             return;
         }
         const time = t - this.time;
+        // this.shader.setUniformsValues({ timeFactor: time / 100 % 1000 });
 
         if (this.sceneInited) {
             for (let key in this.graph.animations)
