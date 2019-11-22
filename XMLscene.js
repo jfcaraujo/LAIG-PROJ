@@ -174,7 +174,7 @@ class XMLscene extends CGFscene {
             return;
         }
         const time = t - this.time;
-        // this.shader.setUniformsValues({ timeFactor: time / 100 % 1000 });
+        this.securityCamera.shader.setUniformsValues({ timeFactor: time });
 
         if (this.sceneInited) {
             for (let key in this.graph.animations)
