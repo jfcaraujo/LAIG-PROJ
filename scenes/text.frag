@@ -6,22 +6,17 @@ varying vec2 vTextureCoord;
 uniform sampler2D uSampler;
 uniform float timeFactor;
 
-void main() {//TODO add gradiente
+void main() {
+	vec4 color = texture2D(uSampler, vTextureCoord);
+	float x = vTextureCoord.x;
 	float y = vTextureCoord.y;
-	float offset = 0.4 * timeFactor/1000.0;
-	float interval1_low = mod(0.0 + offset,1.0);
-	float interval1_high = mod(0.1 + offset,1.0);
-	float interval2_low = mod(0.5 + offset,1.0);
-	float interval2_high = mod(0.6 + offset,1.0);
+	float dist = sqrt( (abs(0.5-x)*abs(0.5-x)) + (abs(0.5-y)*abs(0.5-y)));//distancia ate ao centro
+	float gradient = 1.0-dist/0.71;
+	color = vec4(color.rgb * gradient,1.0);
+	float offset = 2.0* timeFactor/1000.0;
 
-	if (y < interval1_high && y > interval1_low)
-		gl_FragColor =  vec4(1.0,1.0,1.0, 1.0);
-	else if (interval1_high < interval1_low && (y < interval1_high || y > interval1_low))
-		gl_FragColor =  vec4(1.0,1.0,1.0, 1.0);
-	else if (y < interval2_high && y > interval2_low)
-		gl_FragColor =  vec4(1.0,1.0,1.0, 1.0);
-	else if (interval2_high < interval2_low && (y < interval2_high || y > interval2_low))
-		gl_FragColor =  vec4(1.0,1.0,1.0, 1.0);
+	if (mod(y * 10.0-offset, 3.0) > 2.0)
+		gl_FragColor = vec4(1.0,1.0,1.0,1.0);//barra branca
 	else
-		gl_FragColor =  texture2D(uSampler, vTextureCoord);
+		gl_FragColor =  color;
 }
