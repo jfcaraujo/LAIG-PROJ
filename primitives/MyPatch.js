@@ -26,7 +26,7 @@ class MyPatch extends CGFobject {
                     this.controlPoints[i * this.pointsV + j][0],
                     this.controlPoints[i * this.pointsV + j][1],
                     this.controlPoints[i * this.pointsV + j][2],
-                    this.controlPoints[i * this.pointsV + j][3]]);// ou 1
+                    1]);
             }
             this.controlPointsAux.push(point);
         }

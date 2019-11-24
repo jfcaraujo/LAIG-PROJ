@@ -887,17 +887,17 @@ class MySceneGraph {
                 let points = [];
                 for (let i = 0; i < npointsU * npointsV; i++) {
                     // xx
-                    const xx = this.reader.getFloat(patch[i], 'xx');
+                    const xx = this.reader.getFloat(patch.children[i], 'xx');
                     if (!(xx != null && !isNaN(xx)))
                         return "unable to parse xx of the primitive coordinates for ID = " + primitiveId;
 
                     // yy
-                    const yy = this.reader.getFloat(patch[i], 'yy');
+                    const yy = this.reader.getFloat(patch.children[i], 'yy');
                     if (!(yy != null && !isNaN(yy)))
                         return "unable to parse yy of the primitive coordinates for ID = " + primitiveId;
 
                     // zz
-                    const zz = this.reader.getFloat(patch[i], 'zz');
+                    const zz = this.reader.getFloat(patch.children[i], 'zz');
                     if (!(zz != null && !isNaN(zz)))
                         return "unable to parse zz of the primitive coordinates for ID = " + primitiveId;
 
@@ -905,7 +905,7 @@ class MySceneGraph {
                     points.push(point);
                 }
 
-                let newPatch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, points);
+                let newPatch = new MyPatch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, points);
                 this.primitives[primitiveId] = newPatch;
             } else if (primitiveType == 'cylinder2') {
                 // slices
