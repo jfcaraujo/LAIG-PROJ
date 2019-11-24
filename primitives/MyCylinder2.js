@@ -15,35 +15,34 @@ class MyCylinder2 extends CGFobject {
 
   initBuffers() {
     this.controlPoints = [
-      [ 
-           [-this.topRadius, 0.0, this.height, 1],
-           [-this.baseRadius, 0.0, 0.0, 1] 
+      [
+        [-this.radiustop, 0.0, this.height, 1],
+        [-this.radiusBase, 0.0, 0.0, 1]
       ],
-      [ 
-          [-this.topRadius, (4/3)*this.topRadius, this.height, 1],
-          [-this.baseRadius, (4/3)*this.baseRadius, 0.0, 1] 
+      [
+        [-this.radiustop, (4 / 3) * this.radiustop, this.height, 1],
+        [-this.radiusBase, (4 / 3) * this.radiusBase, 0.0, 1]
       ],
-      [ 
-          [this.topRadius, (4/3)*this.topRadius, this.height, 1],
-          [this.baseRadius, (4/3)*this.baseRadius, 0.0, 1] 
+      [
+        [this.radiustop, (4 / 3) * this.radiustop, this.height, 1],
+        [this.radiusBase, (4 / 3) * this.radiusBase, 0.0, 1]
       ],
-      [ 
-          [this.topRadius, 0.0, this.height, 1],
-          [this.baseRadius, 0.0, 0.0, 1]						 
+      [
+        [this.radiustop, 0.0, this.height, 1],
+        [this.radiusBase, 0.0, 0.0, 1]
       ]
-  ];
+    ];
 
-  this.surface = new CGFnurbsSurface(3, 1, this.controlPoints);
+    this.surface = new CGFnurbsSurface(3, 1, this.controlPoints);
 
-  this.obj = new CGFnurbsObject(this.scene, this.slices/2, this.stacks/2, this.surface);
+    this.obj = new CGFnurbsObject(this.scene, this.slices / 2, this.stacks, this.surface);
   }
 
-  display()
-	{   
-        this.obj.display();
-        this.scene.pushMatrix();
-            this.scene.rotate(Math.PI, 0, 0, 1);
-            this.obj.display();
-        this.scene.popMatrix();
-    };
+  display() {
+    this.obj.display();
+    this.scene.pushMatrix();
+    this.scene.rotate(Math.PI, 0, 0, 1);
+    this.obj.display();
+    this.scene.popMatrix();
+  };
 }
