@@ -16,7 +16,7 @@ void main() {
 	float newY = mod(y * 10.0-offset, 3.0); 
 
 	if (newY > 2.0)
-		gl_FragColor = vec4(sin((newY-2.0)*3.14) * (color.rgb + vec3(1.0,1.0,1.0)) ,1.0);//barra branca
+		gl_FragColor = vec4(sin((0.15+(newY-2.0)*0.6)*3.14) * (color.rgb + vec3(1.0,1.0,1.0)) ,1.0);//barra branca, valores para o sin alternam entre 0.15 e 0.75 PI
 	else
 		gl_FragColor =  vec4(color.rgb * gradient,1.0);
 }
