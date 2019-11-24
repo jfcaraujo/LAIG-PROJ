@@ -385,7 +385,7 @@ class MySceneGraph {
         for (let i = 0; i < children.length; i++) {
 
             let j;
-// Storing light information
+            // Storing light information
             const global = [];
             const attributeNames = [];
             const attributeTypes = [];
@@ -863,7 +863,7 @@ class MySceneGraph {
                 this.primitives[primitiveId] = plane;
 
             } else if (primitiveType == 'patch') {
-                let patch=grandChildren[0];
+                let patch = grandChildren[0];
                 // npointsU
                 const npointsU = this.reader.getInteger(patch, 'npointsU');
                 if (!(npointsU != null && !isNaN(npointsU)))
@@ -884,7 +884,7 @@ class MySceneGraph {
                 if (!(npartsV != null && !isNaN(npartsV)))
                     return "unable to parse npartsV of the primitive coordinates for ID = " + primitiveId;
 
-                let points=[];
+                let points = [];
                 for (let i = 0; i < npointsU * npointsV; i++) {
                     // xx
                     const xx = this.reader.getFloat(patch[i], 'xx');
@@ -901,11 +901,11 @@ class MySceneGraph {
                     if (!(zz != null && !isNaN(zz)))
                         return "unable to parse zz of the primitive coordinates for ID = " + primitiveId;
 
-                    const point=[xx,yy,zz];
+                    const point = [xx, yy, zz];
                     points.push(point);
                 }
 
-                let newPatch = new Patch(this.scene, primitiveId, npartsU, npartsV, npointsU, npointsV,points);
+                let newPatch = new Patch(this.scene, primitiveId, npointsU, npointsV, npartsU, npartsV, points);
                 this.primitives[primitiveId] = newPatch;
             } else if (primitiveType == 'cylinder2') {
                 // slices

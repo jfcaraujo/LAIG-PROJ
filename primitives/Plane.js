@@ -1,5 +1,5 @@
 class MyPlane extends CGFobject {
-    constructor(scene, u, v) {
+    constructor(scene, id, u, v) {
         super(scene);
         this.vertices = [];
         this.indices = [];
