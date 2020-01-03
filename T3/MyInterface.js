@@ -7,6 +7,16 @@ class MyInterface extends CGFinterface {
      */
     constructor() {
         super();
+        this.removeFolder = function(name) {
+            var folder = this.gui.__folders[name];
+            if (!folder) {
+                return;
+            }
+            folder.close();
+            this.gui.__ul.removeChild(folder.domElement.parentNode);
+            delete this.gui.__folders[name];
+            this.gui.onResize();
+        }
     }
 
     /**
@@ -23,6 +33,8 @@ class MyInterface extends CGFinterface {
         // add a group of controls (and open/expand by defult)
 
         this.initKeys();
+
+        this.addGameOptions();
 
         return true;
     }
@@ -71,5 +83,15 @@ class MyInterface extends CGFinterface {
             }
             i++;
         }
+    }
+
+    addGameOptions() { //TODO add score and time
+        const folder = this.gui.addFolder("Game Options");
+        folder.open();
+        folder.add(this.scene, 'intelligent').name('Intelligent AI');
+        folder.add(this.scene, 'gameMode', this.scene.gameModes).name('Game Mode');
+        folder.add(this.scene, 'gameScene', this.scene.gameScenes).name('Game Scene').onChange(this.scene.changeTheme.bind(this.scene));
+        folder.add(this.scene, 'undo').name('Undo');
+        folder.add(this.scene, 'restart').name('Restart game!');
     }
 }

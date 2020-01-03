@@ -46,7 +46,9 @@ function getUrlVars() {
 }
 
 //Include additional files here
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'primitives/MyRectangle.js', 'primitives/MyTriangle.js', 'primitives/MyTorus.js', 'primitives/MySphere.js', 'primitives/MyCylinder.js', 'MyComponent.js', 'Animation.js', 'MySecurityCamera.js', 'primitives/MyPatch.js', 'primitives/MyCylinder2.js', 'primitives/Plane.js', 'primitives/MyCube.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'primitives/MyRectangle.js', 'primitives/MyTriangle.js', 'primitives/MyTorus.js', 'primitives/MySphere.js', 'primitives/MyCylinder.js', 'MyComponent.js',
+    'Animation.js', 'MySecurityCamera.js', 'primitives/MyPatch.js', 'primitives/MyCylinder2.js', 'primitives/Plane.js',
+    'primitives/MyCube.js', 'primitives/MyCone.js', 'MyGameOrchestrator.js', 'MyGameSequence.js', 'MyGameBoard.js', 'MyAnimator.js', 'MyPiece.js', 'MyGameMove.js', 'MyTile.js',
 
     main = function() {
         // Standard application, scene and interface setup
@@ -64,11 +66,11 @@ serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.j
         // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml
         // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor)
 
-        const filename = getUrlVars()['file'] || "demo.xml";
+        //const filename = getUrlVars()['file'] || "demo.xml";
 
         // create and load graph, and associate it to scene.
         // Check console for loading errors
-        const myGraph = new MySceneGraph(filename, myScene);
+        //const myGraph = new MySceneGraph(filename, myScene);
 
         // start
         app.run();

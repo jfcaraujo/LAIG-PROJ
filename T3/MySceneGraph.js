@@ -10,7 +10,8 @@ const MATERIALS_INDEX = 5;
 const TRANSFORMATIONS_INDEX = 6;
 const ANIMATIONS_INDEX = 7;
 const PRIMITIVES_INDEX = 8;
-const COMPONENTS_INDEX = 9;
+const GAME_INDEX = 9;
+const COMPONENTS_INDEX = 10;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -28,7 +29,7 @@ class MySceneGraph {
 
         this.nodes = [];
 
-        this.idRoot = null;                    // The id of the root element.
+        this.idRoot = null; // The id of the root element.
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -193,6 +194,17 @@ class MySceneGraph {
 
             //Parse primitives block
             if ((error = this.parsePrimitives(nodes[index])) != null)
+                return error;
+        }
+        // <gameElements>
+        if ((index = nodeNames.indexOf("gameElements")) == -1)
+            return "tag <gameElements> missing";
+        else {
+            if (index != GAME_INDEX)
+                this.onXMLMinorError("tag <gameElements> out of order");
+
+            //Parse gameElements block
+            if ((error = this.parseGameElements(nodes[index])) != null)
                 return error;
         }
 
@@ -978,6 +990,7 @@ class MySceneGraph {
             }
             this.animations[animationId] = new KeyframeAnimation(this.scene, keyframes);
         }
+        this.log("Parsed animations");
     }
 
     parseKeyframe(keyframeNode) {
@@ -1019,6 +1032,142 @@ class MySceneGraph {
         rotation.push(...[x, y, z]);
 
         return new Keyframe(instant, translation, rotation, scale);
+    }
+
+    /**
+     * Parses the <gameElements> block.
+     * @param {gameElements block element} gameElementsNode
+     */
+    parseGameElements(gameElementsNode) {
+        const children = gameElementsNode.children;
+
+        //pieces
+        this.pieces = [];
+        let pieces = children[1].children;
+
+        //---------------Cone------------------
+        // slices
+        let slices = this.reader.getFloat(pieces[0], 'slices');
+        if (!(slices != null && !isNaN(slices)))
+            return "unable to parse slices of the primitive coordinates for cone";
+
+        //stacks
+        let stacks = this.reader.getFloat(pieces[0], 'stacks');
+        if (!(stacks != null && !isNaN(stacks)))
+            return "unable to parse stacks of the primitive coordinates for cone";
+
+        //height
+        let height = this.reader.getFloat(pieces[0], 'height');
+        if (!(height != null && !isNaN(height)))
+            return "unable to parse height of the primitive coordinates for cone";
+
+        //radius
+        let radius = this.reader.getFloat(pieces[0], 'radius');
+        if (!(radius != null && !isNaN(radius)))
+            return "unable to parse radius of the primitive coordinates for cone";
+
+        let cone = new MyCone(this.scene, 'cone', slices, stacks, height, radius);
+        this.pieces.push(cone);
+
+        //---------------Cube------------------
+        // side
+        let side = this.reader.getFloat(pieces[1], 'side');
+        if (!(side != null && !isNaN(side)))
+            return "unable to parse side of the primitive coordinates for cube";
+
+        let cube = new MyCube(this.scene, 'cube', side);
+        this.pieces.push(cube);
+
+        //---------------cylinder------------------
+        // slices
+        slices = this.reader.getFloat(pieces[2], 'slices');
+        if (!(slices != null && !isNaN(slices)))
+            return "unable to parse slices of the primitive coordinates for cylinder";
+
+        //stacks
+        stacks = this.reader.getFloat(pieces[2], 'stacks');
+        if (!(stacks != null && !isNaN(stacks)))
+            return "unable to parse stacks of the primitive coordinates for cylinder";
+
+        //height
+        height = this.reader.getFloat(pieces[2], 'height');
+        if (!(height != null && !isNaN(height)))
+            return "unable to parse height of the primitive coordinates for cylinder";
+
+        //baseRadius
+        let baseRadius = this.reader.getFloat(pieces[2], 'base');
+        if (!(baseRadius != null && !isNaN(baseRadius)))
+            return "unable to parse baseRadius of the primitive coordinates for cylinder";
+
+        //topRadius
+        let topRadius = this.reader.getFloat(pieces[2], 'top');
+        if (!(topRadius != null && !isNaN(topRadius)))
+            return "unable to parse topRadius of the primitive coordinates for cylinder";
+
+        let cylinder = new MyCylinder(this.scene, 'cylinder', slices, stacks, height, baseRadius, topRadius);
+        this.pieces.push(cylinder);
+
+
+        //---------------sphere------------------
+        // slices
+        slices = this.reader.getFloat(pieces[3], 'slices');
+        if (!(slices != null && !isNaN(slices)))
+            return "unable to parse slices of the primitive coordinates for sphere";
+
+        //stacks
+        stacks = this.reader.getFloat(pieces[3], 'stacks');
+        if (!(stacks != null && !isNaN(stacks)))
+            return "unable to parse stacks of the primitive coordinates for sphere";
+
+        //radius
+        radius = this.reader.getFloat(pieces[3], 'radius');
+        if (!(radius != null && !isNaN(radius)))
+            return "unable to parse radius of the primitive coordinates for sphere";
+
+        const sphere = new MySphere(this.scene, 'sphere', radius, slices, stacks);
+        this.pieces.push(sphere);
+
+        //---------------whitepiecesmaterial------------------
+        let grandChildren = pieces[4].children;
+        let emission = this.parseColor(grandChildren[0], "emission of the material whitepieces");
+        let ambient = this.parseColor(grandChildren[1], "ambient of the material whitepieces");
+        let diffuse = this.parseColor(grandChildren[2], "diffuse of the material whitepieces");
+        let specular = this.parseColor(grandChildren[3], "specular of the material whitepieces");
+
+        let material = new CGFappearance(this.scene);
+        material.setTextureWrap("REPEAT", "REPEAT");
+        material.setShininess(10);
+        material.setEmission(emission[0], emission[1], emission[2], emission[3]);
+        material.setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
+        material.setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
+        material.setSpecular(specular[0], specular[1], specular[2], specular[3]);
+        this.materials['whitepieces'] = material;
+
+        //---------------blackpiecesmaterial------------------
+        grandChildren = pieces[5].children;
+        emission = this.parseColor(grandChildren[0], "emission of the material blackpieces");
+        ambient = this.parseColor(grandChildren[1], "ambient of the material blackpieces");
+        diffuse = this.parseColor(grandChildren[2], "diffuse of the material blackpieces");
+        specular = this.parseColor(grandChildren[3], "specular of the material blackpieces");
+
+        material = new CGFappearance(this.scene);
+        material.setTextureWrap("REPEAT", "REPEAT");
+        material.setShininess(10);
+        material.setEmission(emission[0], emission[1], emission[2], emission[3]);
+        material.setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
+        material.setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
+        material.setSpecular(specular[0], specular[1], specular[2], specular[3]);
+        this.materials['blackpieces'] = material;
+
+        //---------------piecestexture------------------
+        const textureFile = this.reader.getString(pieces[6], 'file');
+        if (textureFile == null) {
+            this.onXMLMinorError("Texture with null filepath");
+        }
+        const tex = new CGFtexture(this.scene, textureFile);
+        this.textures['pieceTexture'] = tex;
+
+        this.log("Parsed game elements");
     }
 
     /**

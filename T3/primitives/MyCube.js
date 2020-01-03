@@ -4,8 +4,9 @@
  * @param scene - Reference to MyScene object
  */
 class MyCube extends CGFobject {
-    constructor(scene, side) {
+    constructor(scene, id, side) {
         super(scene);
+        this.id = id;
         this.side = side;
         this.initBuffers();
     }
@@ -62,11 +63,7 @@ class MyCube extends CGFobject {
             0, 0, -1,
             0, 0, -1,
             0, 0, -1,
-            0, 0, -1, 
-			-1, 0, 0, 
-			-1, 0, 0, 
-			-1, 0, 0, 
-			-1, 0, 0,
+            0, 0, -1, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0,
             0, 1, 0,
             0, 1, 0,
             0, 1, 0,
@@ -79,7 +76,35 @@ class MyCube extends CGFobject {
             0, -1, 0,
             0, -1, 0,
             0, -1, 0
-        ]
+        ];
+
+        this.texCoords = [
+            0, 0,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+            0, 1,
+            1, 0,
+            1, 1
+
+        ];
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }

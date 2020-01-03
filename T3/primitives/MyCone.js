@@ -29,6 +29,7 @@ class MyCone extends CGFobject {
         //base
         for (let i = 0; i < this.pointsPerStack; i++) {
             this.vertices.push(radius * Math.cos(ang), -Math.sin(ang) * radius, 0);
+            this.texCoords.push(radius * Math.cos(ang), -Math.sin(ang) * radius);
             this.normals.push(0, 0, -1);
             if (i > 1)
                 this.indices.push(0, i - 1, i);
@@ -40,6 +41,7 @@ class MyCone extends CGFobject {
             ang = 0;
             for (let i = 0; i < this.pointsPerStack; i++) {
                 this.vertices.push(radius * Math.cos(ang), -Math.sin(ang) * radius, this.stackHeight * x);
+                this.texCoords.push(radius * Math.cos(ang), this.stackHeight * x);
                 if (x > 0 && i > 0) {
                     this.indices.push(x * this.pointsPerStack + i - 1, (x + 1) * this.pointsPerStack + i - 1, (x + 1) * this.pointsPerStack + i);
                     this.indices.push(x * this.pointsPerStack + i - 1, (x + 1) * this.pointsPerStack + i, x * this.pointsPerStack + i);
@@ -59,6 +61,5 @@ class MyCone extends CGFobject {
         this.initGLBuffers();
     }
 
-    updateTexCoords(s, t) {
-    }
+    updateTexCoords(s, t) {}
 }

@@ -20,6 +20,25 @@ class XMLscene extends CGFscene {
         super.init(application);
 
         this.sceneInited = false;
+        this.intelligent = true;
+        this.gameModes = {
+            'Player vs Player': 0,
+            'Player vs Pc': 1,
+            'Pc vs Pc': 2
+        }
+        this.gameMode = 0;
+        this.gameScene = "demo.xml";
+        this.gameScenes = {
+            'Default': "demo.xml",
+            '2nd scene': "demo2.xml",
+        }
+        this.restart = function() {
+            this.gameOrchestrator.restart();
+        }
+
+        this.undo = function() {
+            this.gameOrchestrator.undo();
+        }
 
         this.initCameras();
 
@@ -32,6 +51,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
+
+        this.gameOrchestrator = new MyGameOrchestrator(this);
         //this.textureRTT = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
         //this.securityCamera = new MySecurityCamera(this);
 
@@ -111,15 +132,21 @@ class XMLscene extends CGFscene {
 
         this.initViews();
 
+        this.interface.removeFolder("Lights");
+        this.interface.removeFolder("Views");
+
         this.interface.addLights(this.graph.lights);
 
         this.interface.addViews(this.graph.views);
 
         this.sceneInited = true;
+
+        this.restart();
     }
 
     display() {
             if (this.sceneInited) {
+                this.gameOrchestrator.orchestrate();
                 /* this.textureRTT.attachToFrameBuffer();
                  this.render(this.interface.securityCameraId);
                  this.textureRTT.detachFromFrameBuffer();*/
@@ -128,6 +155,7 @@ class XMLscene extends CGFscene {
                 /* this.gl.disable(this.gl.DEPTH_TEST);
                  this.securityCamera.display();
                  this.gl.enable(this.gl.DEPTH_TEST);*/
+                this.gameOrchestrator.display();
             }
         }
         /**
@@ -160,8 +188,7 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.setDefaultAppearance();
 
-            // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+            this.gameOrchestrator.display();
         }
 
         this.popMatrix();
@@ -179,6 +206,12 @@ class XMLscene extends CGFscene {
         if (this.sceneInited) {
             for (let key in this.graph.animations)
                 this.graph.animations[key].update(time);
+            this.gameOrchestrator.update(time);
         }
+
+    }
+
+    changeTheme(theme) {
+        this.gameOrchestrator.changeTheme(theme);
     }
 }

@@ -152,6 +152,29 @@
         </primitive>
     </primitives>
 
+    <gameElements>
+        <board />
+        <pieces> 
+            <cone radius="0.4" height="1" slices="10" stacks="3" />
+            <cube side="0.8"/>
+            <cylinder base="0.4" top="0.4" height="1" slices="10" stacks="3" />
+            <sphere radius="0.4" slices="10" stacks="10" />
+            <whiteMaterial>
+                <emission r="0" g="0" b="0" a="1.0" />
+                <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+                <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+                <specular r="0.25" g="0.25" b="0.25" a="1.0" />
+            </whiteMaterial>
+            <blackMaterial>
+                <emission r="0" g="0" b="0" a="1.0" />
+                <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+                <diffuse r="0.2" g="0.2" b="0.2" a="1.0" />
+                <specular r="0" g="0" b="0.0" a="1.0" />
+            </blackMaterial>
+            <texture file="scenes/images/wood.jpg"/>
+        </pieces>
+    </gameElements>
+
     <components>
     <!-- planet -->
         <component id="ring">
