@@ -52,6 +52,8 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
 
+        this.firstTime = true;
+        this.setPickEnabled(true);
         this.gameOrchestrator = new MyGameOrchestrator(this);
         //this.textureRTT = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
         //this.securityCamera = new MySecurityCamera(this);
@@ -98,6 +100,7 @@ class XMLscene extends CGFscene {
                 i++;
             }
         }
+        this.lights[0].enable();
     }
 
     initViews() {
@@ -141,12 +144,17 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = true;
 
-        this.restart();
+        if (this.firstTime) {
+            this.restart();
+            this.firstTime = false;
+        }
     }
 
     display() {
             if (this.sceneInited) {
                 this.gameOrchestrator.orchestrate();
+                this.gameOrchestrator.managePick(this.pickResults);
+                this.clearPickRegistration();
                 /* this.textureRTT.attachToFrameBuffer();
                  this.render(this.interface.securityCameraId);
                  this.textureRTT.detachFromFrameBuffer();*/
@@ -206,7 +214,8 @@ class XMLscene extends CGFscene {
         if (this.sceneInited) {
             for (let key in this.graph.animations)
                 this.graph.animations[key].update(time);
-            this.gameOrchestrator.update(time);
+            this.gameOrchestrator.orchestrate();
+            this.gameOrchestrator.update(t);
         }
 
     }

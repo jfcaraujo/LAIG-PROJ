@@ -16,13 +16,13 @@ class MyAnimator extends CGFobject {
         this.startTile = move.startTile;
         this.endTile = move.endTile;
         this.piece = move.piece;
-        let yDif = this.endTile.y - this.startTile.y;
-        let xDif = this.endTile.x - this.startTile.x;
-        this.animation = new KeyframeAnimation(this.scene, [new Keyframe(0, [0, 0, 0], [0, 0, 0], [1, 1, 1]),
-            new Keyframe(1000, [0, 2, 0], [0, 0, 0], [1, 1, 1]),
-            new Keyframe(2000, [xDif, 2, yDif], [0, 0, 0], [1, 1, 1]),
-            new Keyframe(3000, [xDif, 0, yDif], [0, 0, 0], [1, 1, 1])
-        ]);
+        let matrix = mat4.create();
+        mat4.translate(matrix, matrix, [this.startTile.x, 0, this.startTile.y]);
+        this.animation = new KeyframeAnimation(this.scene, [new Keyframe(0, [this.startTile.x, 0, this.startTile.y], [0, 0, 0], [1, 1, 1]),
+            new Keyframe(1000, [this.startTile.x, 2, this.startTile.y], [0, 0, 0], [1, 1, 1]),
+            new Keyframe(2000, [this.endTile.x, 2, this.endTile.y], [0, 0, 0], [1, 1, 1]),
+            new Keyframe(3000, [this.endTile.x, 0, this.endTile.y], [0, 0, 0], [1, 1, 1])
+        ], matrix);
     }
 
     update(time) {
@@ -31,6 +31,7 @@ class MyAnimator extends CGFobject {
         else if (time - this.startTime > 3000) {
             this.animating = false;
             this.endTile.setPiece(this.piece);
+            this.orchestrator.changeTurn();
         }
         this.animation.update(time - this.startTime);
     }

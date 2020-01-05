@@ -47,8 +47,8 @@ function getUrlVars() {
 
 //Include additional files here
 serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'primitives/MyRectangle.js', 'primitives/MyTriangle.js', 'primitives/MyTorus.js', 'primitives/MySphere.js', 'primitives/MyCylinder.js', 'MyComponent.js',
-    'Animation.js', 'MySecurityCamera.js', 'primitives/MyPatch.js', 'primitives/MyCylinder2.js', 'primitives/Plane.js',
-    'primitives/MyCube.js', 'primitives/MyCone.js', 'MyGameOrchestrator.js', 'MyGameSequence.js', 'MyGameBoard.js', 'MyAnimator.js', 'MyPiece.js', 'MyGameMove.js', 'MyTile.js',
+    'Animation.js', 'MySecurityCamera.js', 'primitives/MyPatch.js', 'primitives/MyCylinder2.js', 'primitives/MyPlane.js',
+    'primitives/MyCube.js', 'primitives/MyCone.js', 'MyGameOrchestrator.js', 'MyGameSequence.js', 'MyGameBoard.js', 'MyAnimator.js', 'MyPiece.js', 'MyGameMove.js', 'MyTile.js', 'MyPrologInterface.js',
 
     main = function() {
         // Standard application, scene and interface setup

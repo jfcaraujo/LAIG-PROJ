@@ -7,7 +7,7 @@ class MyPiece extends CGFobject {
     constructor(scene, type, pieces) {
         super(scene);
         this.type = type;
-        // this.tile = null;
+        this.tile = null;
         this.object = pieces[(this.type % 5) - 1];
     }
 
@@ -15,14 +15,14 @@ class MyPiece extends CGFobject {
         return this.type;
     }
 
-    /* setTile(tile) {
-            this.tile = tile;
-        }
+    setTile(tile) {
+        this.tile = tile;
+    }
 
-        getTile() {
-            return this.tile;
-        }
-    */
+    getTile() {
+        return this.tile;
+    }
+
     display() {
         this.scene.pushMatrix();
 

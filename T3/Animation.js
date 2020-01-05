@@ -3,18 +3,18 @@ class Animation {
         this.scene = scene;
     }
 
-    update(time) {
-    }
+    update(time) {}
 
-    apply() {
-    }
+    apply() {}
 }
 
 class KeyframeAnimation extends Animation {
-    constructor(scene, keyframes) {
+
+    constructor(scene, keyframes, transformation) {
         super(scene);
         this.keyframes = keyframes;
-        this.currentTransformation = mat4.create();
+        if (transformation == null) transformation = mat4.create();
+        this.currentTransformation = transformation;
         this.keyframeIndex = 0;
     }
 
@@ -41,9 +41,8 @@ class KeyframeAnimation extends Animation {
             mat4.rotateY(this.currentTransformation, this.currentTransformation, rotate[1]);
             mat4.rotateZ(this.currentTransformation, this.currentTransformation, rotate[2]);
             mat4.scale(this.currentTransformation, this.currentTransformation, scale);
-        }
-        else {
-            currentKeyframe = this.keyframes[this.keyframeIndex-1];
+        } else {
+            currentKeyframe = this.keyframes[this.keyframeIndex - 1];
             mat4.translate(this.currentTransformation, this.currentTransformation, currentKeyframe.translate);
             mat4.rotateX(this.currentTransformation, this.currentTransformation, currentKeyframe.rotate[0]);
             mat4.rotateY(this.currentTransformation, this.currentTransformation, currentKeyframe.rotate[1]);

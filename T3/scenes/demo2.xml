@@ -368,7 +368,7 @@
         </component>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="0" z="6" />
+                <translate x="-4" y="0" z="6" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             <materials>

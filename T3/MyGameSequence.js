@@ -10,12 +10,12 @@ class MyGameSequence extends CGFobject {
     }
 
     addMove(move) {
-        this.moves.push(move);
+        const mov = move;
+        this.moves.push(mov);
     }
 
     undo() {
-        const move = this.moves[this.moves.length - 1];
-        this.moves.pop();
+        const move = this.moves.pop();
         return move;
     }
 }

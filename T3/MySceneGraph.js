@@ -988,7 +988,7 @@ class MySceneGraph {
             for (let x = 0; x < grandChildren.length; x++) {
                 keyframes.push(this.parseKeyframe(grandChildren[x]));
             }
-            this.animations[animationId] = new KeyframeAnimation(this.scene, keyframes);
+            this.animations[animationId] = new KeyframeAnimation(this.scene, keyframes, null);
         }
         this.log("Parsed animations");
     }
@@ -1160,12 +1160,45 @@ class MySceneGraph {
         this.materials['blackpieces'] = material;
 
         //---------------piecestexture------------------
-        const textureFile = this.reader.getString(pieces[6], 'file');
+        let textureFile = this.reader.getString(pieces[6], 'file');
         if (textureFile == null) {
             this.onXMLMinorError("Texture with null filepath");
         }
         const tex = new CGFtexture(this.scene, textureFile);
         this.textures['pieceTexture'] = tex;
+
+
+        const tiles = children[2].children;
+        //------------------blueGameMaterial--------------------
+        grandChildren = tiles[0].children;
+        emission = this.parseColor(grandChildren[0], "emission of the material blueGameMaterial");
+        ambient = this.parseColor(grandChildren[1], "ambient of the material blueGameMaterial");
+        diffuse = this.parseColor(grandChildren[2], "diffuse of the material blueGameMaterial");
+        specular = this.parseColor(grandChildren[3], "specular of the material blueGameMaterial");
+
+        material = new CGFappearance(this.scene);
+        material.setTextureWrap("REPEAT", "REPEAT");
+        material.setShininess(10);
+        material.setEmission(emission[0], emission[1], emission[2], emission[3]);
+        material.setAmbient(ambient[0], ambient[1], ambient[2], ambient[3]);
+        material.setDiffuse(diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
+        material.setSpecular(specular[0], specular[1], specular[2], specular[3]);
+        this.materials['blueGameMaterial'] = material;
+
+        //---------------blacktyle------------------
+        textureFile = this.reader.getString(tiles[1], 'file');
+        if (textureFile == null) {
+            this.onXMLMinorError("Texture with null filepath");
+        }
+        const black = new CGFtexture(this.scene, textureFile);
+        this.textures['blacktyle'] = black;
+        //---------------whitetyle------------------
+        textureFile = this.reader.getString(tiles[2], 'file');
+        if (textureFile == null) {
+            this.onXMLMinorError("Texture with null filepath");
+        }
+        const white = new CGFtexture(this.scene, textureFile);
+        this.textures['whitetyle'] = white;
 
         this.log("Parsed game elements");
     }
@@ -1400,7 +1433,10 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+        this.scene.pushMatrix();
+        this.scene.translate(-3, 0, 0);
         this.displayComponent(this.idRoot, null, null, 1, 1);
+        this.scene.popMatrix();
     }
 
     displayComponent(componentID, material, texture, s, t) {
