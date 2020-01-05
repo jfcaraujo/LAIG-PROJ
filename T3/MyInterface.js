@@ -85,7 +85,7 @@ class MyInterface extends CGFinterface {
         }
     }
 
-    addGameOptions() { //TODO add score and time
+    addGameOptions() {
         const folder = this.gui.addFolder("Game Options");
         folder.open();
         folder.add(this.scene, 'intelligent').name('Intelligent AI');

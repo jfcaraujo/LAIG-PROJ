@@ -29,7 +29,7 @@ class XMLscene extends CGFscene {
         this.gameScene = "demo.xml";
         this.gameScenes = {
             'Default': "demo.xml",
-            '2nd scene': "demo2.xml",
+            'The Other Side': "demo2.xml",
         }
         this.restart = function() {
             if (!this.animating) {
@@ -44,7 +44,7 @@ class XMLscene extends CGFscene {
         }
 
         this.movie = function() {
-            if (!this.animating) {
+            if (!this.animating && this.gameOrchestrator.gameSequence.moves.length > 0) {
                 this.interface.currentCameraId = Object.keys(this.graph.views)[1];
                 this.animating = true;
                 this.moviePlaying = true;
@@ -248,9 +248,13 @@ class XMLscene extends CGFscene {
     changeTheme(theme) {
         this.gameOrchestrator.changeTheme(theme);
         this.angle = 0;
-        this.animating = false;
         this.sceneInited = false;
         this.time = null;
+        if (this.gameOrchestrator.player == 1 && this.gameOrchestrator.animator.animating)
+            this.rotateCamera();
+        else if (this.gameOrchestrator.player == 2 && !this.gameOrchestrator.animator.animating)
+            this.rotateCamera();
+        else this.animating = false;
     }
 
     rotateCamera() {

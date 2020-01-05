@@ -1,13 +1,13 @@
 <lxs>
     <scene root="demoRoot" axis_length="5"/>
 
-    <views default="defaultCamera">
-        <perspective id="defaultCamera" near="0.1" far="500" angle="40"> 
-            <from x="20" y="10" z="3" />
+    <views default="player view">
+        <perspective id="player view" near="0.1" far="500" angle="40"> 
+            <from x="3" y="14" z="11" />
             <to x="3" y="0" z="3" />
         </perspective>
         <perspective id="sideView" near="0.1" far="500" angle="40"> 
-            <from x="20" y="10" z="3" />
+            <from x="-14" y="10" z="3" />
             <to x="3" y="0" z="3" />
         </perspective>
     </views>
@@ -19,7 +19,7 @@
 
     <lights>
         <omni id="demoLight" enabled="1">
-            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <location x="9.8" y="11.9" z="2" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -171,7 +171,7 @@
                 <diffuse r="0.2" g="0.2" b="0.2" a="1.0" />
                 <specular r="0" g="0" b="0.0" a="1.0" />
             </blackMaterial>
-            <texture file="scenes/images/wood.jpg"/>
+            <texture file="scenes/images/marble.jpg"/>
         </pieces>
         <tyles>
             <blueMaterial>
@@ -200,6 +200,19 @@
                 <primitiveref id="torus"/>
             </children>
         </component>
+        <component id="sphere">
+            <transformation>     
+                <translate x="-0.5" y="-1.0" z="-0.5" />     
+            </transformation>
+            <materials>
+                <material id="blueMaterial" />
+                <material id="greenMaterial" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+        </component>
         <component id="planet">
             <transformation>
                 <translate x="3" y="5" z="-4" />                
@@ -210,7 +223,7 @@
             </materials>
             <texture id="none"/>
             <children>
-                <primitiveref id="sphere"/>
+                <componentref id="sphere"/>
                 <componentref id="ring"/> 
             </children>
         </component>
@@ -355,7 +368,7 @@
         </component>
         <component id="newcomponents">
             <transformation>
-                <translate x="0" y="1" z="2"/>
+                <translate x="0" y="1" z="-8"/>
             </transformation>
             <materials>
                 <material id="redMaterial"/>
@@ -368,8 +381,8 @@
         </component>
         <component id="demoRoot">
             <transformation>
-                <translate x="-4" y="0" z="6" />
-                <scale x="1" y="1" z="1" />
+                <translate x="15" y="0" z="0" />
+                <rotate axis="y" angle="180" />
             </transformation>
             <materials>
                 <material id="brownMaterial" />
