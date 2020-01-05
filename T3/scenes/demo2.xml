@@ -192,8 +192,8 @@
                 <transformationref id="flatten"/>    
             </transformation>
             <materials>
+                <material id="redMaterial" />
                 <material id="greenMaterial" />
-                <material id="blueMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -205,8 +205,8 @@
                 <translate x="-0.5" y="-1.0" z="-0.5" />     
             </transformation>
             <materials>
-                <material id="blueMaterial" />
                 <material id="greenMaterial" />
+                <material id="redMaterial" />
             </materials>
             <texture id="none"/>
             <children>

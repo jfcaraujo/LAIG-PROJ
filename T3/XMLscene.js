@@ -202,7 +202,7 @@ class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        this.axis.display();
+        //this.axis.display();
 
         for (let i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(true);
