@@ -30,8 +30,9 @@ class MyAnimator extends CGFobject {
             this.startTime = time;
         else if (time - this.startTime > 3000) {
             this.animating = false;
-            this.endTile.setPiece(this.piece);
-            this.orchestrator.changeTurn();
+            this.orchestrator.gameboard.getTileWithTile(this.endTile).setPiece(this.piece);
+            if (!this.scene.moviePlaying)
+                this.orchestrator.checkWin();
         }
         this.animation.update(time - this.startTime);
     }

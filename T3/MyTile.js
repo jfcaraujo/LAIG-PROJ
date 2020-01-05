@@ -34,7 +34,7 @@ class MyTile extends CGFobject {
         this.scene.translate(this.x, 0, this.y);
 
         if (this.piece != null) { //piece
-            if (this.scene.gameOrchestrator.state < 2 && ((this.y > 5 && this.scene.gameOrchestrator.player == 1) || (this.y < 0 && this.scene.gameOrchestrator.player == 2)))
+            if (!this.scene.animating && ((this.y > 5 && this.scene.gameOrchestrator.player == 1) || (this.y < 0 && this.scene.gameOrchestrator.player == 2)))
                 this.scene.registerForPick(this.x * 10 + this.y, this.getPiece());
             this.piece.display();
             this.scene.clearPickRegistration();

@@ -60,6 +60,21 @@ class MyGameBoard extends CGFobject {
         return piece.getTile();
     }
 
+    getTileWithTile(tile) {
+        let x = tile.x - 1;
+        let y = tile.y;
+        if (y < 0) {
+            y = y + 2;
+            return this.auxBlackTiles[y][x];
+        } else if (y > 5) {
+            y = y - 6;
+            return this.auxWhiteTiles[y][x];
+        } else {
+            y = y - 1;
+            return this.tiles[y][x];
+        }
+    }
+
     display() {
         for (let x = 0; x < 4; x++)
             for (let y = 0; y < 4; y++)

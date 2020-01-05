@@ -22,14 +22,15 @@ class MyGameOrchestrator extends CGFobject {
         /*states: 
         0-beginning of play
         1-after piece was selected, waiting for tile
-        2-animating(after tile was selected)
-        3-game over
+        2-game over
         */
     }
 
     update(time) {
         if (this.animator.animating)
             this.animator.update(time);
+        if (this.scene.moviePlaying)
+            this.gameSequence.animate();
     }
     display() {
         this.graph.displayScene();
@@ -39,13 +40,12 @@ class MyGameOrchestrator extends CGFobject {
     }
 
     changeTheme(theme) {
-        this.scene.sceneInited = false;
-        this.scene.time = null;
         this.graph = new MySceneGraph(theme, this.scene);
     }
 
     movePiece(move) {
-        this.state = 2;
+        this.scene.rotateCamera();
+        this.state = 0;
         this.gameSequence.addMove(move);
         this.animator.animate(move);
         move.startTile.removePiece();
@@ -53,21 +53,23 @@ class MyGameOrchestrator extends CGFobject {
     }
 
     orchestrate() {
-        if (this.state == 0 && this.replied == true) {
-            let smart;
-            if (this.scene.intelligent)
-                smart = "smart";
-            else smart = "random";
-            if ((this.scene.gameMode > 0 && this.player == 2) || (this.scene.gameMode == 2 && this.player == 1)) {
-                this.replied = false;
-                this.state = 2;
-                this.prolog.getBotMove(smart, this.gameboard.getBoardForProlog(), this.gameboard.getPiecesForProlog(this.player));
+        if (this.state != 2) {
+            if (!this.scene.animating && this.replied == true) {
+                if ((this.scene.gameMode > 0 && this.player == 2) || (this.scene.gameMode == 2 && this.player == 1)) {
+                    let smart;
+                    if (this.scene.intelligent)
+                        smart = "smart";
+                    else smart = "random";
+                    this.replied = false;
+                    this.scene.animating = true;
+                    this.prolog.getBotMove(smart, this.gameboard.getBoardForProlog(), this.gameboard.getPiecesForProlog(this.player));
+                }
             }
         }
     }
 
     managePick(results) {
-        if (this.state < 2) {
+        if (!this.scene.animating) {
             if (results != null && results.length > 0) { // any results?
                 for (var i = 0; i < results.length; i++) {
                     var obj = results[i][0]; // get object from result
@@ -89,24 +91,35 @@ class MyGameOrchestrator extends CGFobject {
             this.prolog.getAvailableMoves(obj.type, this.gameboard.getBoardForProlog());
         } else if (obj instanceof MyTile) {
             console.log("Picked tile with xy " + uniqueId);
-            this.movePiece(new MyGameMove(this.scene, this.startTile.getPiece(), this.startTile, obj, this.gameboard.tiles, this.gameboard.auxWhiteTiles, this.gameboard.auxBlackTiles))
+            this.movePiece(new MyGameMove(this.scene, this.startTile.getPiece(), this.startTile, obj, this.gameboard))
         }
     }
 
     changeTurn() {
-        this.prolog.checkWin(this.gameboard.getBoardForProlog());
         this.player = 1 + (this.player % 2);
-        //move camera
         this.tilesToPlay = [];
         this.startTile = null;
-        if (this.state != 3) this.state = 0;
+    }
+
+    checkWin() {
+        this.prolog.checkWin(this.gameboard.getBoardForProlog());
     }
 
     undo() {
-        let move = this.gameSequence.undo();
-        this.state = 2;
-        this.animator.animate(new MyGameMove(this.scene, move.endTile.getPiece(), move.endTile, move.startTile, this.gameboard.tiles, this.gameboard.auxWhiteTiles, this.gameboard.auxBlackTiles));
-        move.endTile.removePiece();
-        move.piece.setTile(move.startTile);
+        if (this.gameSequence.moves.length > 0 && !this.scene.animating) {
+            this.scene.rotateCamera();
+            let move = this.gameSequence.undo();
+            this.scene.animating = true;
+            this.animator.animate(new MyGameMove(this.scene, move.endTile.getPiece(), move.endTile, move.startTile, this.gameboard));
+            move.endTile.removePiece();
+            move.piece.setTile(move.startTile);
+        }
+    }
+
+    movie() {
+        this.gameboard = new MyGameBoard(this.scene, this.graph.pieces);
+        this.gameSequence.currentMove = 0;
+        this.replied = false;
+        this.gameSequence.animate();
     }
 }

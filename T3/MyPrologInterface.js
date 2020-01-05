@@ -62,8 +62,12 @@ class MyPrologInterface extends CGFobject {
         let response = data.target.responseText;
         if (response == "15") {
             console.log("You won the game!");
-            this.scene.gameOrchestrator.state = 3;
+            this.scene.gameOrchestrator.state = 2;
+        } else {
+            this.scene.gameOrchestrator.state = 0;
+
         }
+        this.scene.gameOrchestrator.changeTurn();
         this.scene.gameOrchestrator.replied = true;
     }
 
@@ -77,6 +81,6 @@ class MyPrologInterface extends CGFobject {
         let piece = gameOrchestrator.gameboard.getPieceByType(response[5]);
         gameOrchestrator.movePiece(new MyGameMove(this.scene,
             piece, piece.getTile(), gameOrchestrator.gameboard.getTileWithCoords(response[1] - 1, response[3] - 1),
-            gameOrchestrator.gameboard.tiles, gameOrchestrator.gameboard.auxWhiteTiles, gameOrchestrator.gameboard.auxBlackTiles))
+            gameOrchestrator.gameboard))
     }
 }

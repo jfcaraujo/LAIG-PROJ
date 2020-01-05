@@ -55,4 +55,10 @@ class MySphere extends CGFobject {
 
     updateTexCoords(s, t) {};
 
+    display() {
+        this.scene.pushMatrix();
+        this.scene.translate(0.5, this.radius, 0.5);
+        super.display();
+        this.scene.popMatrix();
+    }
 }

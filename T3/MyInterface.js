@@ -91,6 +91,7 @@ class MyInterface extends CGFinterface {
         folder.add(this.scene, 'intelligent').name('Intelligent AI');
         folder.add(this.scene, 'gameMode', this.scene.gameModes).name('Game Mode');
         folder.add(this.scene, 'gameScene', this.scene.gameScenes).name('Game Scene').onChange(this.scene.changeTheme.bind(this.scene));
+        folder.add(this.scene, 'movie').name('Movie');
         folder.add(this.scene, 'undo').name('Undo');
         folder.add(this.scene, 'restart').name('Restart game!');
     }

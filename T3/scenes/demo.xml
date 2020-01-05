@@ -1,9 +1,9 @@
 <lxs>
     <scene root="demoRoot" axis_length="5"/>
 
-    <views default="defaultCamera">
-        <perspective id="defaultCamera" near="0.1" far="500" angle="40"> 
-            <from x="20" y="10" z="3" />
+    <views default="player view">
+        <perspective id="player view" near="0.1" far="500" angle="40"> 
+            <from x="3" y="14" z="11" />
             <to x="3" y="0" z="3" />
         </perspective>
         <perspective id="sideView" near="0.1" far="500" angle="40"> 
@@ -368,7 +368,7 @@
         </component>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="0" z="6" />
+                <translate x="-3" y="0" z="6" />
                 <scale x="1" y="1" z="1" />
             </transformation>
             <materials>

@@ -8,7 +8,6 @@ class XMLscene extends CGFscene {
      */
     constructor(myinterface) {
         super();
-
         this.interface = myinterface;
     }
 
@@ -33,12 +32,29 @@ class XMLscene extends CGFscene {
             '2nd scene': "demo2.xml",
         }
         this.restart = function() {
-            this.gameOrchestrator.restart();
+            if (!this.animating) {
+                if (this.gameOrchestrator.player == 2)
+                    this.rotateCamera();
+                this.gameOrchestrator.restart();
+            }
         }
 
         this.undo = function() {
             this.gameOrchestrator.undo();
         }
+
+        this.movie = function() {
+            if (!this.animating) {
+                this.interface.currentCameraId = Object.keys(this.graph.views)[1];
+                this.animating = true;
+                this.moviePlaying = true;
+                this.gameOrchestrator.movie();
+            }
+        }
+
+        this.angle = 0;
+        this.animating = false;
+        this.moviePlaying = false;
 
         this.initCameras();
 
@@ -105,12 +121,13 @@ class XMLscene extends CGFscene {
 
     initViews() {
         this.camera = this.graph.views[this.graph.defaultCameraId];
-        this.interface.setActiveCamera(this.camera);
+        //this.interface.setActiveCamera(this.camera);
     }
 
     selectView(id) {
         this.camera = this.graph.views[id];
-        this.interface.setActiveCamera(this.camera);
+        if (id != this.graph.defaultCameraId)
+            this.interface.setActiveCamera(this.camera);
     }
 
     setDefaultAppearance() {
@@ -217,10 +234,26 @@ class XMLscene extends CGFscene {
             this.gameOrchestrator.orchestrate();
             this.gameOrchestrator.update(t);
         }
+        if (this.animating && !this.moviePlaying) {
+            this.graph.views[this.graph.defaultCameraId].orbit([0, 1, 0], Math.PI / 35.0);
+            this.angle += Math.PI / 35.0;
+            if (this.angle >= Math.PI) {
+                this.angle -= Math.PI;
+                this.animating = false;
+            }
+        }
 
     }
 
     changeTheme(theme) {
         this.gameOrchestrator.changeTheme(theme);
+        this.angle = 0;
+        this.animating = false;
+        this.sceneInited = false;
+        this.time = null;
+    }
+
+    rotateCamera() {
+        this.animating = true;
     }
 }

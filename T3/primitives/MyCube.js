@@ -108,4 +108,12 @@ class MyCube extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+
+    display() {
+        this.scene.pushMatrix();
+        let x = (1 - this.vertices[2]) / 2.0;
+        this.scene.translate(x, 0, x);
+        super.display();
+        this.scene.popMatrix();
+    }
 }
